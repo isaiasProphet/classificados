@@ -28,6 +28,26 @@ class AnuncioDAO {
         return $anuncios;
     }
 
+    public function search($term) {
+        $query = "SELECT * FROM Anuncio WHERE titulo LIKE :term OR descricao LIKE :term ORDER BY dataCriacao DESC";
+        $stmt = $this->conn->prepare($query);
+        $searchTerm = "%{$term}%";
+        $stmt->bindParam(":term", $searchTerm);
+        $stmt->execute();
+
+        $anuncios = [];
+        $imagemDAO = new ImagemAnuncioDAO();
+        while ($row = $stmt->fetch()) {
+            $anuncio = $this->hydrateAnuncio($row);
+            $capa = $imagemDAO->findCapaByAnuncioId($anuncio->getId());
+            if ($capa) {
+                $anuncio->setCapaPath($capa->getCaminhoArquivo());
+            }
+            $anuncios[] = $anuncio;
+        }
+        return $anuncios;
+    }
+
     public function readById($id) {
         $query = "SELECT * FROM Anuncio WHERE id = :id LIMIT 1";
         $stmt = $this->conn->prepare($query);
@@ -65,6 +85,22 @@ class AnuncioDAO {
         return false;
     }
 
+    public function update(Anuncio $anuncio) {
+        $query = "UPDATE Anuncio 
+                  SET titulo = :titulo, descricao = :descricao, subCategoriaId = :subCategoriaId, preco = :preco 
+                  WHERE id = :id AND usuarioId = :usuarioId";
+        $stmt = $this->conn->prepare($query);
+
+        $stmt->bindValue(':titulo', $anuncio->getTitulo());
+        $stmt->bindValue(':descricao', $anuncio->getDescricao());
+        $stmt->bindValue(':subCategoriaId', $anuncio->getSubCategoriaId() > 0 ? $anuncio->getSubCategoriaId() : null);
+        $stmt->bindValue(':preco', $anuncio->getPreco());
+        $stmt->bindValue(':id', $anuncio->getId());
+        $stmt->bindValue(':usuarioId', $anuncio->getUsuarioId());
+
+        return $stmt->execute();
+    }
+
     private function hydrateAnuncio($row) {
         $dataCriacao = new DateTime($row['dataCriacao']);
         $dataAtualizacao = new DateTime($row['dataAtualizacao']);
@@ -84,5 +120,24 @@ class AnuncioDAO {
         $anuncio->setId($row['id']);
         
         return $anuncio;
+    }
+
+    public function readByUsuarioId($usuarioId) {
+        $query = "SELECT * FROM Anuncio WHERE usuarioId = :usuarioId ORDER BY dataCriacao DESC";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(":usuarioId", $usuarioId);
+        $stmt->execute();
+
+        $anuncios = [];
+        $imagemDAO = new ImagemAnuncioDAO();
+        while ($row = $stmt->fetch()) {
+            $anuncio = $this->hydrateAnuncio($row);
+            $capa = $imagemDAO->findCapaByAnuncioId($anuncio->getId());
+            if ($capa) {
+                $anuncio->setCapaPath($capa->getCaminhoArquivo());
+            }
+            $anuncios[] = $anuncio;
+        }
+        return $anuncios;
     }
 }

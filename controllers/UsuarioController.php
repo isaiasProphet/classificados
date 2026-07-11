@@ -48,7 +48,7 @@ class UsuarioController {
             }
 
             // A senha será hasheada no construtor
-            $usuario = new Usuario($nome, $email, $senha, '', new DateTime(), PermissaoUsuario::ANUNCIANTE);
+            $usuario = new Usuario($nome, $email, $senha, '', new DateTime(), PermissaoUsuario::CLIENTE);
 
             if ($this->usuarioDAO->create($usuario)) {
                 header("Location: index.php?action=login&success=registered");
@@ -64,5 +64,26 @@ class UsuarioController {
         session_destroy();
         header("Location: index.php");
         exit;
+    }
+
+    public function meusAnuncios() {
+        if (!isset($_SESSION['usuario_id'])) {
+            header("Location: index.php?action=login");
+            exit;
+        }
+
+        require_once __DIR__ . '/../dao/UsuarioDAO.php';
+        $usuarioDAO = new UsuarioDAO();
+        $usuario = $usuarioDAO->readById($_SESSION['usuario_id']);
+        if ($usuario && $usuario->getPermissoes() === PermissaoUsuario::CLIENTE) {
+            header("Location: index.php?error=unauthorized");
+            exit;
+        }
+
+        require_once __DIR__ . '/../dao/AnuncioDAO.php';
+        $anuncioDAO = new AnuncioDAO();
+        $anuncios = $anuncioDAO->readByUsuarioId($_SESSION['usuario_id']);
+        
+        require_once __DIR__ . '/../views/usuarios/meus_anuncios.php';
     }
 }

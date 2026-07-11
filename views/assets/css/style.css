@@ -263,6 +263,7 @@ p {
 
 .categories-grid {
     display: flex;
+    justify-content: center;
     gap: 12px;
     overflow-x: auto;
     padding-bottom: 8px;
@@ -906,3 +907,48 @@ footer p {
     }
 }
 
+/* ============================================
+   Dropdown do Usuário
+   ============================================ */
+.user-dropdown {
+    position: relative;
+}
+
+.user-dropdown-menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background: var(--bg-white);
+    border: 1px solid var(--border-color);
+    box-shadow: var(--shadow-md);
+    border-radius: var(--radius);
+    overflow: hidden;
+    min-width: 160px;
+    z-index: 1000;
+    margin-top: 10px;
+}
+
+.user-dropdown:hover .user-dropdown-menu {
+    display: block;
+}
+
+.user-dropdown-menu a {
+    display: block !important;
+    padding: 12px 16px !important;
+    color: var(--text-primary) !important;
+    text-decoration: none !important;
+    font-size: 0.95rem !important;
+    background: transparent !important;
+    transition: background 0.2s ease, color 0.2s ease !important;
+}
+
+.user-dropdown-menu a:hover {
+    background: var(--bg-primary) !important;
+    color: var(--olx-purple) !important;
+}
+
+.arrow-down {
+    font-size: 0.75rem;
+    margin-left: 2px;
+}

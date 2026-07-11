@@ -29,11 +29,20 @@ switch ($action) {
     case 'logout':
         $usuarioController->logout();
         break;
+    case 'meus_anuncios':
+        $usuarioController->meusAnuncios();
+        break;
     case 'create':
         $anuncioController->create();
         break;
     case 'store':
         $anuncioController->store();
+        break;
+    case 'edit':
+        $anuncioController->edit();
+        break;
+    case 'update':
+        $anuncioController->update();
         break;
     case 'show':
         $anuncioController->show();

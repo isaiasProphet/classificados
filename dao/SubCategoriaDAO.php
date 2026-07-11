@@ -23,4 +23,18 @@ class SubCategoriaDAO {
         }
         return $subcategorias;
     }
+
+    public function readById($id) {
+        $query = "SELECT * FROM SubCategoria WHERE id = :id LIMIT 1";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(":id", $id);
+        $stmt->execute();
+        
+        if ($row = $stmt->fetch()) {
+            $subcategoria = new SubCategoria($row['nome'], $row['categoria_id'], $row['slug']);
+            $subcategoria->setId($row['id']);
+            return $subcategoria;
+        }
+        return null;
+    }
 }

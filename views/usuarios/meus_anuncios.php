@@ -1,63 +1,20 @@
-<?php require_once 'layout/header.php'; ?>
+<?php require_once __DIR__ . '/../layout/header.php'; ?>
 
-<!-- Seção de Categorias -->
-<section class="categories-section">
-    <div class="container">
-        <div class="categories-grid">
-            <a href="#" class="category-item">
-                <div class="category-icon">🚗</div>
-                <span class="category-name">Autos</span>
-            </a>
-           
-            <a href="#" class="category-item">
-                <div class="category-icon">📱</div>
-                <span class="category-name">Eletrônicos</span>
-            </a>
-            <a href="#" class="category-item">
-                <div class="category-icon">👕</div>
-                <span class="category-name">Moda</span>
-            </a>
-            <a href="#" class="category-item">
-                <div class="category-icon">🏡</div>
-                <span class="category-name">Casa</span>
-            </a>
-            <a href="#" class="category-item">
-                <div class="category-icon">📚</div>
-                <span class="category-name">Livros</span>
-            </a>
-            <a href="#" class="category-item">
-                <div class="category-icon">🐶</div>
-                <span class="category-name">Pets</span>
-            </a>
-            <a href="#" class="category-item">
-                <div class="category-icon">💼</div>
-                <span class="category-name">Empregos</span>
-            </a>
-            <a href="#" class="category-item">
-                <div class="category-icon">🔧</div>
-                <span class="category-name">Serviços</span>
-            </a>
-        </div>
-    </div>
-</section>
-
-<!-- Anúncios Recentes -->
-<section class="container" style="padding-top: 10px;">
+<section class="container" style="padding-top: 40px;">
     <div class="section-header">
-        <h2>Anúncios Recentes</h2>
+        <h2>Meus Anúncios</h2>
     </div>
 
     <?php if (empty($anuncios)): ?>
         <div class="empty-state animate-fade-in">
             <div class="empty-state-icon">📦</div>
-            <p>Nenhum anúncio encontrado no momento.</p>
-            <p style="margin-top: 8px; font-size: 0.85rem;">Seja o primeiro a anunciar!</p>
+            <p>Você ainda não possui nenhum anúncio publicado.</p>
+            <p style="margin-top: 8px; font-size: 0.85rem;">Que tal <a href="index.php?action=create" style="color: var(--olx-purple); text-decoration: underline;">criar um agora</a>?</p>
         </div>
     <?php else: ?>
-      <div class="grid">
+        <div class="grid">
             <?php foreach ($anuncios as $index => $anuncio): ?>
                 <?php 
-                // Se o anúncio for nulo, um array comum ou não tiver o método, pula para o próximo sem quebrar a página
                 if (empty($anuncio) || !is_object($anuncio) || !method_exists($anuncio, 'getCapaPath')) {
                     continue;
                 }
@@ -91,16 +48,14 @@
                             <span class="ad-card-views">
                                 👁️ <?= $anuncio->getVisualizacoes() ?> visitas
                             </span>
+                            <a href="index.php?action=edit&id=<?= $anuncio->getId() ?>" class="ad-card-action" style="margin-right: 12px; color: var(--olx-orange);" onclick="event.stopPropagation();">✎ Editar</a>
                             <a href="index.php?action=show&id=<?= $anuncio->getId() ?>" class="ad-card-action">Ver detalhes →</a>
                         </div>
                     </div>
                 </div>
             <?php endforeach; ?>
         </div>
-
-
-
     <?php endif; ?>
 </section>
 
-<?php require_once 'layout/footer.php'; ?>
+<?php require_once __DIR__ . '/../layout/footer.php'; ?>

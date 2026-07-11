@@ -21,7 +21,12 @@ class AnuncioController {
     }
 
     public function index() {
-        $anuncios = $this->anuncioDAO->readAll();
+        $search = isset($_GET['search']) ? trim($_GET['search']) : '';
+        if ($search !== '') {
+            $anuncios = $this->anuncioDAO->search($search);
+        } else {
+            $anuncios = $this->anuncioDAO->readAll();
+        }
         require_once __DIR__ . '/../views/home.php';
     }
 
@@ -30,6 +35,15 @@ class AnuncioController {
             header("Location: index.php?action=login&error=not_logged_in");
             exit;
         }
+
+        require_once __DIR__ . '/../dao/UsuarioDAO.php';
+        $usuarioDAO = new UsuarioDAO();
+        $usuario = $usuarioDAO->readById($_SESSION['usuario_id']);
+        if ($usuario && $usuario->getPermissoes() === PermissaoUsuario::CLIENTE) {
+            header("Location: index.php?error=unauthorized");
+            exit;
+        }
+
         $categorias = $this->categoriaDAO->readAll();
         require_once __DIR__ . '/../views/anuncios/create.php';
     }
@@ -38,6 +52,14 @@ class AnuncioController {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if (!isset($_SESSION['usuario_id'])) {
                 header("Location: index.php?action=login&error=not_logged_in");
+                exit;
+            }
+
+            require_once __DIR__ . '/../dao/UsuarioDAO.php';
+            $usuarioDAO = new UsuarioDAO();
+            $usuario = $usuarioDAO->readById($_SESSION['usuario_id']);
+            if ($usuario && $usuario->getPermissoes() === PermissaoUsuario::CLIENTE) {
+                header("Location: index.php?error=unauthorized");
                 exit;
             }
 
@@ -61,6 +83,72 @@ class AnuncioController {
                 exit;
             } else {
                 echo "Erro ao salvar anúncio.";
+            }
+        }
+    }
+
+    public function edit() {
+        if (!isset($_SESSION['usuario_id'])) {
+            header("Location: index.php?action=login&error=not_logged_in");
+            exit;
+        }
+
+        $id = isset($_GET['id']) ? (int) $_GET['id'] : 0;
+        if ($id <= 0) {
+            header("Location: index.php?action=meus_anuncios");
+            exit;
+        }
+
+        $anuncio = $this->anuncioDAO->readById($id);
+        
+        // Verifica se anúncio existe e pertence ao usuário logado
+        if (!$anuncio || $anuncio->getUsuarioId() !== $_SESSION['usuario_id']) {
+            header("Location: index.php?action=meus_anuncios&error=unauthorized");
+            exit;
+        }
+
+        $categorias = $this->categoriaDAO->readAll();
+        
+        require_once __DIR__ . '/../dao/SubCategoriaDAO.php';
+        $subCategoriaDAO = new SubCategoriaDAO();
+        $subCategoria = $subCategoriaDAO->readById($anuncio->getSubCategoriaId());
+        $categoriaId = $subCategoria ? $subCategoria->getcategoria_id() : 0;
+
+        require_once __DIR__ . '/../views/anuncios/edit.php';
+    }
+
+    public function update() {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            if (!isset($_SESSION['usuario_id'])) {
+                header("Location: index.php?action=login&error=not_logged_in");
+                exit;
+            }
+
+            $id = isset($_POST['id']) ? (int)$_POST['id'] : 0;
+            $titulo = $_POST['titulo'] ?? '';
+            $descricao = $_POST['descricao'] ?? '';
+            $preco = (float) ($_POST['preco'] ?? 0);
+            $subCategoriaId = (int) ($_POST['subCategoriaId'] ?? 0);
+            
+            $usuarioId = $_SESSION['usuario_id']; 
+
+            // Validar ownership
+            $anuncio = $this->anuncioDAO->readById($id);
+            if (!$anuncio || $anuncio->getUsuarioId() !== $usuarioId) {
+                header("Location: index.php?action=meus_anuncios&error=unauthorized");
+                exit;
+            }
+
+            $anuncio->setTitulo($titulo);
+            $anuncio->setDescricao($descricao);
+            $anuncio->setPreco($preco);
+            $anuncio->setSubCategoriaId($subCategoriaId);
+
+            if ($this->anuncioDAO->update($anuncio)) {
+                header("Location: index.php?action=meus_anuncios&success=updated");
+                exit;
+            } else {
+                echo "Erro ao atualizar anúncio.";
             }
         }
     }
