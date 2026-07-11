@@ -952,3 +952,31 @@ footer p {
     font-size: 0.75rem;
     margin-left: 2px;
 }
+
+
+/* 
+   CSS Mensagens
+*/
+
+.mensagens-container {
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+}
+
+.painel-esquerdo {
+    flex: 3;
+}
+
+.painel-direito {
+    flex: 7;
+}
+
+.painel-esquerdo .form-card,
+.painel-direito .form-card {
+    margin-bottom: 5px;
+}
+
+/* 
+   CSS Mensagens fim
+*/

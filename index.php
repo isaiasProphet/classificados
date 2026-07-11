@@ -8,6 +8,9 @@ $anuncioController = new AnuncioController();
 require_once __DIR__ . '/controllers/UsuarioController.php';
 $usuarioController = new UsuarioController();
 
+require_once __DIR__ . '/controllers/MensagemController.php';
+$mensagemController = new MensagemController();
+
 switch ($action) {
     case 'get_subcategorias':
         require_once __DIR__ . '/controllers/CategoriaController.php';
@@ -46,6 +49,18 @@ switch ($action) {
         break;
     case 'show':
         $anuncioController->show();
+        break;
+    case 'enviar_mensagem':
+        $mensagemController->enviar();
+        break;
+    case 'listar_mensagens':
+        $mensagemController->listar();
+        break;
+    case 'listar_chats':
+        $mensagemController->listarChats();
+        break;
+    case 'api_listar_chats':
+        $mensagemController->apiListarChats();
         break;
     case 'index':
     default:

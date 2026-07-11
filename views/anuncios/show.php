@@ -51,15 +51,28 @@
                     R$ <?= number_format($anuncio->getPreco(), 2, ',', '.') ?>
                 </p>
                 <div style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 20px; display: flex; gap: 15px;">
-                    <span>📅 Publicado em: <?= $anuncio->getDataCriacao()->format('d/m/Y H:i') ?></span>
-                   
+                    <span>Publicado em: <?= $anuncio->getDataCriacao()->format('d/m/Y H:i') ?></span>
+                    
+                </div>
+                  <div style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 20px; display: flex; gap: 15px;">
+                    
+                    <span> 
+                        
+                        Anunciado por: <?= $usuario->getNome(); ?>
+                    </span>
                 </div>
 
 
                  <div style="margin-top: auto; border-top: 1px solid var(--border-color); padding-top: 20px;">
-                <button class="btn-primary" style="width: 100%; padding: 15px; font-size: 1.1rem; text-align: center; display: flex; justify-content: center; align-items: center; gap: 10px; margin-bottom: 15px; background: var(--olx-orange); border: none; border-radius: 30px; cursor: pointer; transition: background 0.2s;">
-                    💬 Chat com o vendedor
-                </button>
+                <?php if (isset($_SESSION['usuario_id']) && $_SESSION['usuario_id'] !== $anuncio->getUsuarioId()): ?>
+                    <button class="btn-primary" onclick="abrirChat()" style="width: 100%; padding: 15px; font-size: 1.1rem; text-align: center; display: flex; justify-content: center; align-items: center; gap: 10px; margin-bottom: 15px; background: var(--olx-orange); border: none; border-radius: 30px; cursor: pointer; transition: background 0.2s;">
+                        💬 Chat com o vendedor
+                    </button>
+                <?php elseif (!isset($_SESSION['usuario_id'])): ?>
+                    <button class="btn-primary" onclick="window.location.href='index.php?action=login'" style="width: 100%; padding: 15px; font-size: 1.1rem; text-align: center; display: flex; justify-content: center; align-items: center; gap: 10px; margin-bottom: 15px; background: var(--olx-orange); border: none; border-radius: 30px; cursor: pointer; transition: background 0.2s;">
+                        💬 Faça login para usar o Chat
+                    </button>
+                <?php endif; ?>
                 <button class="btn-outline" style="width: 100%; padding: 15px; font-size: 1.1rem; text-align: center; display: flex; justify-content: center; align-items: center; gap: 10px; color: var(--olx-purple); border: 2px solid var(--olx-purple); background: transparent; border-radius: 30px; cursor: pointer; transition: background 0.2s, color 0.2s;" onmouseover="this.style.background='var(--olx-purple)'; this.style.color='white';" onmouseout="this.style.background='transparent'; this.style.color='var(--olx-purple)';">
                     📞 Ver telefone
                 </button>
@@ -68,6 +81,23 @@
             </div>
 
         </div>
+    </div>
+</div>
+
+<!-- Modal do Chat -->
+<div id="chatModal" style="display: none; position: fixed; bottom: 20px; right: 20px; width: 350px; background: var(--bg-card); border-radius: 12px; box-shadow: 0 5px 20px rgba(0,0,0,0.2); z-index: 1000; display: flex; flex-direction: column; overflow: hidden;" class="hidden-modal">
+    <div style="background: var(--olx-purple); color: white; padding: 15px; display: flex; justify-content: space-between; align-items: center;">
+        <h4 style="margin: 0; font-size: 1.1rem;">Chat com o vendedor</h4>
+        <button onclick="fecharChat()" style="background: transparent; border: none; color: white; font-size: 1.2rem; cursor: pointer;">&times;</button>
+    </div>
+    
+    <div id="chatMessages" style="flex: 1; padding: 15px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; height: 300px; background: var(--bg-body);">
+        <!-- Mensagens serão carregadas aqui via JS -->
+    </div>
+    
+    <div style="padding: 10px; border-top: 1px solid var(--border-color); background: var(--bg-card); display: flex; gap: 10px;">
+        <input type="text" id="chatInput" placeholder="Digite sua mensagem..." style="flex: 1; padding: 10px; border: 1px solid var(--border-color); border-radius: 20px; outline: none;">
+        <button onclick="enviarMensagem()" style="background: var(--olx-purple); color: white; border: none; padding: 10px 15px; border-radius: 20px; cursor: pointer;">Enviar</button>
     </div>
 </div>
 
@@ -91,6 +121,75 @@
             this.style.transform = 'scale(1)';
         });
     });
+
+    // Lógica do Chat
+    const chatModal = document.getElementById('chatModal');
+    const chatMessages = document.getElementById('chatMessages');
+    const chatInput = document.getElementById('chatInput');
+    chatModal.style.display = 'none';
+
+    function abrirChat() {
+        chatModal.style.display = 'flex';
+        chatModal.classList.remove('hidden-modal');
+        carregarMensagens();
+    }
+
+    function fecharChat() {
+        chatModal.style.display = 'none';
+        chatModal.classList.add('hidden-modal');
+    }
+
+    function carregarMensagens() {
+        const anuncioId = <?= $anuncio->getId() ?>;
+        const outroUsuarioId = <?= $anuncio->getUsuarioId() ?>;
+        
+        fetch(`index.php?action=listar_mensagens&anuncioId=${anuncioId}&outroUsuarioId=${outroUsuarioId}`)
+            .then(res => res.json())
+            .then(data => {
+                if(data.success) {
+                    chatMessages.innerHTML = '';
+                    const myId = <?= isset($_SESSION['usuario_id']) ? $_SESSION['usuario_id'] : 0 ?>;
+                    
+                    data.mensagens.forEach(msg => {
+                        const isMine = msg.remetenteUsuarioId === myId;
+                        const align = isMine ? 'align-self: flex-end; background: var(--olx-purple); color: white;' : 'align-self: flex-start; background: #e0e0e0; color: #333;';
+                        
+                        chatMessages.innerHTML += `
+                            <div style="max-width: 80%; padding: 10px 15px; border-radius: 15px; ${align}">
+                                <div>${msg.texto}</div>
+                                <div style="font-size: 0.7rem; margin-top: 5px; opacity: 0.8; text-align: right;">${msg.data_envio}</div>
+                            </div>
+                        `;
+                    });
+                    chatMessages.scrollTop = chatMessages.scrollHeight;
+                }
+            })
+            .catch(err => console.error(err));
+    }
+
+    function enviarMensagem() {
+        const texto = chatInput.value.trim();
+        if(!texto) return;
+        
+        const anuncioId = <?= $anuncio->getId() ?>;
+        const destinatarioUsuarioId = <?= $anuncio->getUsuarioId() ?>;
+        
+        fetch('index.php?action=enviar_mensagem', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ anuncioId, texto, destinatarioUsuarioId })
+        })
+        .then(res => res.json())
+        .then(data => {
+            if(data.success) {
+                chatInput.value = '';
+                carregarMensagens();
+            } else {
+                alert('Erro ao enviar mensagem: ' + data.error);
+            }
+        })
+        .catch(err => console.error(err));
+    }
 </script>
 
 <?php require_once __DIR__ . '/../layout/footer.php'; ?>

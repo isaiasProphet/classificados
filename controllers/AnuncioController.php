@@ -2,11 +2,13 @@
 require_once __DIR__ . '/../dao/AnuncioDAO.php';
 require_once __DIR__ . '/../dao/CategoriaDAO.php';
 require_once __DIR__ . '/../dao/ImagemAnuncioDAO.php';
+require_once __DIR__ . '/../dao/UsuarioDAO.php';
 
 class AnuncioController {
     private $anuncioDAO;
     private $categoriaDAO;
     private $imagemDAO;
+    private $usuarioDAO;
 
     // Diretório para uploads de imagens
     private const UPLOAD_DIR = __DIR__ . '/../uploads/anuncios/';
@@ -18,6 +20,7 @@ class AnuncioController {
         $this->anuncioDAO = new AnuncioDAO();
         $this->categoriaDAO = new CategoriaDAO();
         $this->imagemDAO = new ImagemAnuncioDAO();
+        $this->usuarioDAO = new UsuarioDAO();
     }
 
     public function index() {
@@ -162,6 +165,7 @@ class AnuncioController {
         }
 
         $anuncio = $this->anuncioDAO->readById($id);
+        $usuario = $this->usuarioDAO->readById($anuncio->getUsuarioId());
         
         if (!$anuncio) {
             header("Location: index.php");

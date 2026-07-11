@@ -23,7 +23,7 @@ class Usuario {
         string $email = '',
         string $senha = '',
         string $telefone = '',
-        DateTime $dataCadastro = null,
+        ?DateTime $dataCadastro = null,
         PermissaoUsuario $permissoes = PermissaoUsuario::ANUNCIANTE
     ) {
         $this->nome = $nome;
