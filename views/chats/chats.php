@@ -1,139 +1,5 @@
 <?php require_once __DIR__ . '/../layout/header.php'; ?>
 
-<style>
-.mensagens-wrapper {
-    display: flex;
-    height: 70vh;
-    border-radius: 12px;
-    overflow: hidden;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-    background: #fff;
-    margin-top: 20px;
-}
-.painel-esquerdo {
-    width: 35%;
-    border-right: 1px solid #eee;
-    background: #f9f9f9;
-    display: flex;
-    flex-direction: column;
-}
-.chat-list {
-    overflow-y: auto;
-    flex-grow: 1;
-}
-.chat-item {
-    padding: 15px;
-    border-bottom: 1px solid #eee;
-    cursor: pointer;
-    transition: background 0.3s;
-}
-.chat-item:hover, .chat-item.active {
-    background: #eef2ff;
-}
-.chat-item-header {
-    display: flex;
-    justify-content: space-between;
-    font-weight: bold;
-    margin-bottom: 5px;
-    color: #333;
-}
-.chat-item-title {
-    font-size: 0.9em;
-    color: #666;
-    margin-bottom: 5px;
-}
-.chat-item-preview {
-    font-size: 0.85em;
-    color: #888;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-.painel-direito {
-    width: 65%;
-    display: flex;
-    flex-direction: column;
-    background: #fff;
-}
-.chat-header {
-    padding: 13px;
-    border-bottom: 1px solid #eee;
-    background: #fff;
-    font-weight: bold;
-    font-size: 1.1em;
-}
-.chat-messages {
-    flex-grow: 1;
-    padding: 20px;
-    overflow-y: auto;
-    background: #f4f6f9;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-.message-bubble {
-    max-width: 70%;
-    padding: 12px 16px;
-    border-radius: 15px;
-    font-size: 0.95em;
-    line-height: 1.4;
-    position: relative;
-    word-wrap: break-word;
-}
-.msg-received {
-    background: #fff;
-    border: 1px solid #e0e0e0;
-    align-self: flex-start;
-    border-bottom-left-radius: 2px;
-}
-.msg-sent {
-    background: #007bff;
-    color: #fff;
-    align-self: flex-end;
-    border-bottom-right-radius: 2px;
-}
-.message-time {
-    font-size: 0.75em;
-    opacity: 0.7;
-    margin-top: 5px;
-    text-align: right;
-}
-.chat-input-area {
-    padding: 15px;
-    background: #fff;
-    border-top: 1px solid #eee;
-    display: flex;
-    gap: 10px;
-}
-.chat-input-area input {
-    flex-grow: 1;
-    padding: 10px 15px;
-    border: 1px solid #ccc;
-    border-radius: 20px;
-    outline: none;
-}
-.chat-input-area button {
-    background: #007bff;
-    color: #fff;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 20px;
-    cursor: pointer;
-    font-weight: bold;
-    transition: background 0.3s;
-}
-.chat-input-area button:hover {
-    background: #0056b3;
-}
-.no-chat-selected {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100%;
-    color: #888;
-    font-size: 1.1em;
-}
-</style>
 
 <section style="max-width: 1200px; margin: 40px auto; padding: 0 20px;">
     <h2 style="margin-bottom: 0;">Minhas Mensagens</h2>
@@ -201,9 +67,13 @@ async function openChat(chat, element) {
     document.querySelectorAll('.chat-item').forEach(el => el.classList.remove('active'));
     if (element) element.classList.add('active');
 
+    // Show mobile chat panel
+    document.querySelector('.mensagens-wrapper').classList.add('mobile-chat-active');
+
     const chatPanel = document.getElementById('chatPanel');
     chatPanel.innerHTML = `
         <div class="chat-header">
+            <button class="btn-back-mobile" onclick="closeMobileChat()" style="display:none; margin-right:10px; background:none; border:none; font-size:1.2rem; cursor:pointer; color:var(--olx-purple);">←</button>
             <span style="font-family: Arial; font-size: 0.8em; color: #000000ff; font-weight: bold;"> ${chat.nomeUsuario} </span>
             <span style="font-size: 0.5em; color: #666; font-weight: normal; margin-left: 5px;">Anúncio: ${chat.tituloAnuncio}</span>
         </div>
@@ -217,6 +87,10 @@ async function openChat(chat, element) {
     `;
 
     loadMessages();
+}
+
+function closeMobileChat() {
+    document.querySelector('.mensagens-wrapper').classList.remove('mobile-chat-active');
 }
 
 async function loadMessages() {

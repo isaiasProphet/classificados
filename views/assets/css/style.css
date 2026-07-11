@@ -26,9 +26,9 @@
 
     /* Bordas & Sombras */
     --border-color: #e2e8f0;
-    --shadow-sm: 0 1px 3px rgba(0,0,0,0.08);
-    --shadow-md: 0 4px 12px rgba(0,0,0,0.1);
-    --shadow-lg: 0 10px 30px rgba(0,0,0,0.12);
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08);
+    --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.1);
+    --shadow-lg: 0 10px 30px rgba(0, 0, 0, 0.12);
 
     /* Outros */
     --danger-color: #dc2626;
@@ -217,14 +217,14 @@ a {
     text-decoration: none;
     font-weight: 600;
     font-size: 0.9rem;
-    border: 2px solid rgba(255,255,255,0.5);
+    border: 2px solid rgba(255, 255, 255, 0.5);
     cursor: pointer;
     transition: all 0.2s ease;
     display: inline-block;
 }
 
 .btn-outline:hover {
-    background: rgba(255,255,255,0.15);
+    background: rgba(255, 255, 255, 0.15);
     border-color: var(--text-white);
     color: var(--text-white);
 }
@@ -443,7 +443,7 @@ p {
 }
 
 .hero-section p {
-    color: rgba(255,255,255,0.8);
+    color: rgba(255, 255, 255, 0.8);
     font-size: 1rem;
     max-width: 500px;
     margin: 0 auto;
@@ -706,7 +706,7 @@ footer p {
     left: 0;
     right: 0;
     bottom: 0;
-    background: linear-gradient(to bottom, rgba(0,0,0,0.4) 0%, transparent 50%, rgba(0,0,0,0.4) 100%);
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.4) 0%, transparent 50%, rgba(0, 0, 0, 0.4) 100%);
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
@@ -721,7 +721,7 @@ footer p {
 
 .img-preview-card.is-cover .img-preview-overlay {
     opacity: 1;
-    background: linear-gradient(to bottom, rgba(0,0,0,0.35) 0%, transparent 60%);
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.35) 0%, transparent 60%);
 }
 
 .img-btn-cover,
@@ -817,8 +817,15 @@ footer p {
    Animations
    ============================================ */
 @keyframes fadeInUp {
-    from { opacity: 0; transform: translateY(15px); }
-    to { opacity: 1; transform: translateY(0); }
+    from {
+        opacity: 0;
+        transform: translateY(15px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .animate-fade-in {
@@ -897,7 +904,7 @@ footer p {
 
     .img-preview-overlay {
         opacity: 1;
-        background: linear-gradient(to bottom, rgba(0,0,0,0.35) 0%, transparent 60%);
+        background: linear-gradient(to bottom, rgba(0, 0, 0, 0.35) 0%, transparent 60%);
     }
 }
 
@@ -958,25 +965,193 @@ footer p {
    CSS Mensagens
 */
 
-.mensagens-container {
+
+.mensagens-wrapper {
     display: flex;
-    gap: 20px;
-    align-items: flex-start;
+    height: 70vh;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    background: #fff;
+    margin-top: 20px;
 }
 
 .painel-esquerdo {
-    flex: 3;
+    width: 35%;
+    border-right: 1px solid #eee;
+    background: #f9f9f9;
+    display: flex;
+    flex-direction: column;
+}
+
+.chat-list {
+    overflow-y: auto;
+    flex-grow: 1;
+}
+
+.chat-item {
+    padding: 15px;
+    border-bottom: 1px solid #eee;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.chat-item:hover,
+.chat-item.active {
+    background: #eef2ff;
+}
+
+.chat-item-header {
+    display: flex;
+    justify-content: space-between;
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #333;
+}
+
+.chat-item-title {
+    font-size: 0.9em;
+    color: #666;
+    margin-bottom: 5px;
+}
+
+.chat-item-preview {
+    font-size: 0.85em;
+    color: #888;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .painel-direito {
-    flex: 7;
+    width: 65%;
+    display: flex;
+    flex-direction: column;
+    background: #fff;
 }
 
-.painel-esquerdo .form-card,
-.painel-direito .form-card {
-    margin-bottom: 5px;
+.chat-header {
+    padding: 13px;
+    border-bottom: 1px solid #eee;
+    background: #fff;
+    font-weight: bold;
+    font-size: 1.1em;
+}
+
+.chat-messages {
+    flex-grow: 1;
+    padding: 20px;
+    overflow-y: auto;
+    background: #f4f6f9;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.message-bubble {
+    max-width: 70%;
+    padding: 12px 16px;
+    border-radius: 15px;
+    font-size: 0.95em;
+    line-height: 1.4;
+    position: relative;
+    word-wrap: break-word;
+}
+
+.msg-received {
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    align-self: flex-start;
+    border-bottom-left-radius: 2px;
+}
+
+.msg-sent {
+    background: #007bff;
+    color: #fff;
+    align-self: flex-end;
+    border-bottom-right-radius: 2px;
+}
+
+.message-time {
+    font-size: 0.75em;
+    opacity: 0.7;
+    margin-top: 5px;
+    text-align: right;
+}
+
+.chat-input-area {
+    padding: 15px;
+    background: #fff;
+    border-top: 1px solid #eee;
+    display: flex;
+    gap: 10px;
+}
+
+.chat-input-area input {
+    flex-grow: 1;
+    padding: 10px 15px;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    outline: none;
+}
+
+.chat-input-area button {
+    background: #007bff;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background 0.3s;
+}
+
+.chat-input-area button:hover {
+    background: #0056b3;
+}
+
+.no-chat-selected {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    color: #888;
+    font-size: 1.1em;
 }
 
 /* 
    CSS Mensagens fim
 */
+
+@media (max-width: 768px) {
+    .mensagens-wrapper {
+        flex-direction: column;
+        height: 85vh;
+    }
+
+    .painel-esquerdo, .painel-direito {
+        width: 100%;
+        border-right: none;
+    }
+
+    /* By default on mobile, hide the right panel */
+    .painel-direito {
+        display: none;
+    }
+
+    /* When a chat is selected on mobile */
+    .mensagens-wrapper.mobile-chat-active .painel-esquerdo {
+        display: none;
+    }
+
+    .mensagens-wrapper.mobile-chat-active .painel-direito {
+        display: flex;
+        flex: 1;
+        height: 100%;
+    }
+
+    /* Show back button on mobile */
+    .btn-back-mobile {
+        display: inline-block !important;
+    }
+}
