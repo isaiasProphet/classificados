@@ -1,0 +1,908 @@
+/* ============================================
+   ClassificadosPro — Padrão Visual OLX Brasil
+   ============================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+:root {
+    /* Paleta OLX */
+    --olx-purple: #6e0ad6;
+    --olx-purple-dark: #5a08b0;
+    --olx-purple-light: #f3e8ff;
+    --olx-orange: #f97316;
+    --olx-orange-hover: #ea580c;
+    --olx-green: #16a34a;
+
+    /* Fundos */
+    --bg-primary: #f5f5f5;
+    --bg-white: #ffffff;
+    --bg-card: #ffffff;
+
+    /* Texto */
+    --text-primary: #1a1a2e;
+    --text-secondary: #64748b;
+    --text-muted: #94a3b8;
+    --text-white: #ffffff;
+
+    /* Bordas & Sombras */
+    --border-color: #e2e8f0;
+    --shadow-sm: 0 1px 3px rgba(0,0,0,0.08);
+    --shadow-md: 0 4px 12px rgba(0,0,0,0.1);
+    --shadow-lg: 0 10px 30px rgba(0,0,0,0.12);
+
+    /* Outros */
+    --danger-color: #dc2626;
+    --success-color: #16a34a;
+    --radius: 8px;
+    --radius-lg: 12px;
+}
+
+/* ============================================
+   Reset & Base
+   ============================================ */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', sans-serif;
+}
+
+body {
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    -webkit-font-smoothing: antialiased;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+    width: 100%;
+}
+
+/* ============================================
+   Navbar (Estilo OLX — Fundo Roxo)
+   ============================================ */
+.navbar {
+    background: var(--olx-purple);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    padding: 0;
+    box-shadow: 0 2px 8px rgba(110, 10, 214, 0.3);
+}
+
+.nav-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 60px;
+}
+
+.brand {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-white);
+    text-decoration: none;
+    letter-spacing: -0.5px;
+}
+
+.brand .highlight {
+    color: var(--olx-orange);
+}
+
+.nav-links {
+    list-style: none;
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.nav-links a {
+    color: rgba(255, 255, 255, 0.9);
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.9rem;
+    padding: 8px 14px;
+    border-radius: var(--radius);
+    transition: background 0.2s ease, color 0.2s ease;
+}
+
+.nav-links a:hover {
+    background: rgba(255, 255, 255, 0.15);
+    color: var(--text-white);
+}
+
+/* Barra de busca no header */
+.search-bar {
+    display: flex;
+    flex: 1;
+    max-width: 480px;
+    margin: 0 30px;
+}
+
+.search-bar input {
+    flex: 1;
+    padding: 10px 16px;
+    border: none;
+    border-radius: var(--radius) 0 0 var(--radius);
+    font-size: 0.9rem;
+    outline: none;
+    color: var(--text-primary);
+    background: var(--bg-white);
+}
+
+.search-bar input::placeholder {
+    color: var(--text-muted);
+}
+
+.search-bar button {
+    padding: 10px 18px;
+    background: var(--olx-orange);
+    color: var(--text-white);
+    border: none;
+    border-radius: 0 var(--radius) var(--radius) 0;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.search-bar button:hover {
+    background: var(--olx-orange-hover);
+}
+
+/* ============================================
+   Botões
+   ============================================ */
+.btn-primary {
+    background: var(--olx-purple);
+    color: var(--text-white);
+    padding: 10px 24px;
+    border-radius: var(--radius);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.9rem;
+    border: none;
+    cursor: pointer;
+    transition: background 0.2s ease, transform 0.15s ease;
+    display: inline-block;
+}
+
+.btn-primary:hover {
+    background: var(--olx-purple-dark);
+    transform: translateY(-1px);
+    color: var(--text-white);
+}
+
+.btn-anunciar {
+    background: var(--olx-orange);
+    color: var(--text-white);
+    padding: 10px 24px;
+    border-radius: 30px;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 0.9rem;
+    border: 2px solid var(--olx-orange);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    letter-spacing: 0.3px;
+}
+
+.btn-anunciar:hover {
+    background: var(--olx-orange-hover);
+    border-color: var(--olx-orange-hover);
+    transform: scale(1.03);
+    color: var(--text-white);
+}
+
+.btn-outline {
+    background: transparent;
+    color: var(--text-white);
+    padding: 8px 20px;
+    border-radius: var(--radius);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.9rem;
+    border: 2px solid rgba(255,255,255,0.5);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: inline-block;
+}
+
+.btn-outline:hover {
+    background: rgba(255,255,255,0.15);
+    border-color: var(--text-white);
+    color: var(--text-white);
+}
+
+/* ============================================
+   Typography
+   ============================================ */
+h1 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+h2 {
+    font-size: 1.5rem;
+    margin-bottom: 0.8rem;
+    color: var(--text-primary);
+    font-weight: 700;
+}
+
+p {
+    line-height: 1.6;
+    color: var(--text-secondary);
+}
+
+/* ============================================
+   Seção de Categorias (Estilo OLX)
+   ============================================ */
+.categories-section {
+    background: var(--bg-white);
+    padding: 24px 0;
+    border-bottom: 1px solid var(--border-color);
+    margin-bottom: 30px;
+}
+
+.categories-grid {
+    display: flex;
+    gap: 12px;
+    overflow-x: auto;
+    padding-bottom: 8px;
+    scrollbar-width: thin;
+}
+
+.category-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    min-width: 90px;
+    padding: 12px 8px;
+    border-radius: var(--radius-lg);
+    cursor: pointer;
+    transition: background 0.2s ease;
+    text-decoration: none;
+    color: var(--text-primary);
+}
+
+.category-item:hover {
+    background: var(--olx-purple-light);
+}
+
+.category-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: var(--olx-purple-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4rem;
+    transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.category-item:hover .category-icon {
+    background: var(--olx-purple);
+    color: var(--text-white);
+    transform: scale(1.1);
+}
+
+.category-name {
+    font-size: 0.75rem;
+    font-weight: 500;
+    text-align: center;
+    color: var(--text-secondary);
+}
+
+.category-item:hover .category-name {
+    color: var(--olx-purple);
+}
+
+/* ============================================
+   Grid de Anúncios
+   ============================================ */
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 20px;
+}
+
+/* ============================================
+   Card de Anúncio (Estilo OLX — Flat & Limpo)
+   ============================================ */
+.ad-card {
+    background: var(--bg-card);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    border: 1px solid var(--border-color);
+    transition: box-shadow 0.25s ease, transform 0.25s ease;
+    cursor: pointer;
+}
+
+.ad-card:hover {
+    box-shadow: var(--shadow-lg);
+    transform: translateY(-3px);
+}
+
+.ad-card-image {
+    width: 100%;
+    height: 180px;
+    background: linear-gradient(135deg, var(--olx-purple-light), #e8e0f0);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--olx-purple);
+    font-size: 2.5rem;
+    position: relative;
+}
+
+.ad-card-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.ad-card-status {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    background: var(--olx-purple);
+    color: var(--text-white);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.ad-card-body {
+    padding: 16px;
+}
+
+.ad-card-price {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 6px;
+}
+
+.ad-card-title {
+    font-size: 0.95rem;
+    font-weight: 400;
+    color: var(--text-secondary);
+    margin-bottom: 12px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    line-height: 1.4;
+}
+
+.ad-card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 12px;
+    border-top: 1px solid var(--border-color);
+}
+
+.ad-card-views {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.ad-card-action {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--olx-purple);
+    transition: color 0.2s;
+}
+
+.ad-card-action:hover {
+    color: var(--olx-purple-dark);
+}
+
+/* ============================================
+   Seção Hero (Home)
+   ============================================ */
+.hero-section {
+    background: linear-gradient(135deg, var(--olx-purple), var(--olx-purple-dark));
+    color: var(--text-white);
+    padding: 50px 0 40px;
+    text-align: center;
+    margin-bottom: 0;
+}
+
+.hero-section h1 {
+    color: var(--text-white);
+    font-size: 1.8rem;
+    margin-bottom: 8px;
+}
+
+.hero-section p {
+    color: rgba(255,255,255,0.8);
+    font-size: 1rem;
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+/* ============================================
+   Main Content
+   ============================================ */
+main {
+    flex: 1;
+    padding-bottom: 40px;
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.section-header h2 {
+    position: relative;
+    margin-bottom: 0;
+}
+
+.section-header h2::after {
+    content: '';
+    position: absolute;
+    bottom: -6px;
+    left: 0;
+    width: 40px;
+    height: 3px;
+    background: var(--olx-purple);
+    border-radius: 2px;
+}
+
+/* ============================================
+   Form Styles (Tema Claro)
+   ============================================ */
+.form-card {
+    background: var(--bg-card);
+    border-radius: var(--radius-lg);
+    padding: 32px;
+    border: 1px solid var(--border-color);
+    box-shadow: var(--shadow-sm);
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: var(--text-primary);
+}
+
+.form-control {
+    width: 100%;
+    padding: 12px 16px;
+    border-radius: var(--radius);
+    border: 2px solid var(--border-color);
+    background: var(--bg-white);
+    color: var(--text-primary);
+    font-size: 0.95rem;
+    outline: none;
+    transition: border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.form-control::placeholder {
+    color: var(--text-muted);
+}
+
+.form-control:focus {
+    border-color: var(--olx-purple);
+    box-shadow: 0 0 0 3px rgba(110, 10, 214, 0.12);
+}
+
+select.form-control {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2364748b' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+    padding-right: 36px;
+}
+
+textarea.form-control {
+    resize: vertical;
+    min-height: 100px;
+}
+
+/* ============================================
+   Auth Pages (Login / Registro)
+   ============================================ */
+.auth-section h2 {
+    color: var(--text-primary);
+}
+
+/* Alert / Erro */
+.alert-error {
+    background: #fef2f2;
+    border-left: 4px solid var(--danger-color);
+    padding: 14px 16px;
+    margin-bottom: 20px;
+    border-radius: var(--radius);
+    color: var(--danger-color);
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.alert-success {
+    background: #f0fdf4;
+    border-left: 4px solid var(--success-color);
+    padding: 14px 16px;
+    margin-bottom: 20px;
+    border-radius: var(--radius);
+    color: var(--success-color);
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+/* Empty State */
+.empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    background: var(--bg-white);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--border-color);
+}
+
+.empty-state-icon {
+    font-size: 3rem;
+    margin-bottom: 16px;
+}
+
+.empty-state p {
+    font-size: 1rem;
+    color: var(--text-muted);
+}
+
+/* ============================================
+   Footer (Tema Claro)
+   ============================================ */
+footer {
+    background: var(--bg-white);
+    text-align: center;
+    padding: 24px 0;
+    border-top: 1px solid var(--border-color);
+    margin-top: auto;
+}
+
+footer p {
+    color: var(--text-muted);
+    font-size: 0.85rem;
+}
+
+/* ============================================
+   Upload de Imagens — Componente
+   ============================================ */
+.img-upload-hint {
+    font-weight: 400;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+}
+
+.img-upload-area {
+    margin-top: 4px;
+}
+
+.img-upload-dropzone {
+    border: 2px dashed var(--border-color);
+    border-radius: var(--radius-lg);
+    padding: 36px 20px;
+    text-align: center;
+    cursor: pointer;
+    transition: border-color 0.3s ease, background 0.3s ease, transform 0.2s ease;
+    background: var(--bg-primary);
+    position: relative;
+}
+
+.img-upload-dropzone:hover {
+    border-color: var(--olx-purple);
+    background: var(--olx-purple-light);
+}
+
+.img-upload-dropzone.dragover {
+    border-color: var(--olx-purple);
+    background: var(--olx-purple-light);
+    transform: scale(1.01);
+    box-shadow: 0 0 0 4px rgba(110, 10, 214, 0.1);
+}
+
+.dropzone-icon {
+    font-size: 2.5rem;
+    margin-bottom: 12px;
+    filter: grayscale(30%);
+    transition: filter 0.3s;
+}
+
+.img-upload-dropzone:hover .dropzone-icon,
+.img-upload-dropzone.dragover .dropzone-icon {
+    filter: grayscale(0%);
+}
+
+.dropzone-text {
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+    margin-bottom: 6px;
+    line-height: 1.5;
+}
+
+.dropzone-link {
+    color: var(--olx-purple);
+    font-weight: 600;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+}
+
+.dropzone-subtext {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+}
+
+/* Grid de Previews */
+.img-preview-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin-top: 16px;
+}
+
+.img-preview-card {
+    position: relative;
+    aspect-ratio: 1 / 1;
+    border-radius: var(--radius);
+    overflow: hidden;
+    border: 2px solid var(--border-color);
+    background: var(--bg-primary);
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.img-preview-card.is-cover {
+    border-color: var(--olx-orange);
+    box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.2);
+}
+
+.img-preview-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+/* Overlay com botões */
+.img-preview-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.4) 0%, transparent 50%, rgba(0,0,0,0.4) 100%);
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 6px;
+    opacity: 0;
+    transition: opacity 0.25s ease;
+}
+
+.img-preview-card:hover .img-preview-overlay {
+    opacity: 1;
+}
+
+.img-preview-card.is-cover .img-preview-overlay {
+    opacity: 1;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.35) 0%, transparent 60%);
+}
+
+.img-btn-cover,
+.img-btn-remove {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    border: none;
+    cursor: pointer;
+    font-size: 0.85rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s ease, background 0.2s ease;
+    line-height: 1;
+}
+
+.img-btn-cover {
+    background: rgba(255, 255, 255, 0.9);
+    color: var(--olx-orange);
+}
+
+.img-btn-cover:hover {
+    transform: scale(1.15);
+    background: var(--olx-orange);
+    color: white;
+}
+
+.img-btn-remove {
+    background: rgba(220, 38, 38, 0.85);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+}
+
+.img-btn-remove:hover {
+    transform: scale(1.15);
+    background: var(--danger-color);
+}
+
+/* Badge "CAPA" */
+.img-cover-badge {
+    position: absolute;
+    bottom: 6px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--olx-orange);
+    color: white;
+    font-size: 0.65rem;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 20px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    box-shadow: 0 2px 6px rgba(249, 115, 22, 0.4);
+}
+
+/* Contador de fotos */
+.img-counter {
+    grid-column: 1 / -1;
+    text-align: right;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    font-weight: 500;
+    padding-top: 4px;
+}
+
+/* Toast de mensagens */
+.img-toast {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%) translateY(20px);
+    background: var(--text-primary);
+    color: white;
+    padding: 12px 24px;
+    border-radius: 30px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    box-shadow: var(--shadow-lg);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    z-index: 9999;
+}
+
+.img-toast.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
+
+/* ============================================
+   Animations
+   ============================================ */
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(15px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in {
+    animation: fadeInUp 0.4s ease forwards;
+}
+
+/* ============================================
+   Responsivo
+   ============================================ */
+@media (max-width: 768px) {
+    .nav-content {
+        flex-wrap: wrap;
+        height: auto;
+        padding: 10px 0;
+        gap: 10px;
+    }
+
+    .search-bar {
+        order: 3;
+        max-width: 100%;
+        margin: 0;
+        width: 100%;
+    }
+
+    .nav-links {
+        gap: 4px;
+    }
+
+    .nav-links a {
+        padding: 6px 10px;
+        font-size: 0.85rem;
+    }
+
+    .grid {
+        grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+        gap: 12px;
+    }
+
+    .ad-card-image {
+        height: 140px;
+    }
+
+    .categories-grid {
+        gap: 6px;
+    }
+
+    .category-item {
+        min-width: 72px;
+    }
+
+    h1 {
+        font-size: 1.5rem;
+    }
+
+    .hero-section {
+        padding: 30px 0;
+    }
+
+    .hero-section h1 {
+        font-size: 1.4rem;
+    }
+
+    /* Upload de imagens responsivo */
+    .img-preview-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 8px;
+    }
+
+    .img-upload-dropzone {
+        padding: 24px 16px;
+    }
+
+    .dropzone-icon {
+        font-size: 2rem;
+    }
+
+    .img-preview-overlay {
+        opacity: 1;
+        background: linear-gradient(to bottom, rgba(0,0,0,0.35) 0%, transparent 60%);
+    }
+}
+
+@media (max-width: 480px) {
+    .img-preview-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
