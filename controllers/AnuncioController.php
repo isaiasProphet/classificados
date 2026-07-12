@@ -156,6 +156,13 @@ class AnuncioController {
             $anuncio->setPreco($preco);
             $anuncio->setSubCategoriaId($subCategoriaId);
 
+            // Atualizar status se enviado
+            $statusValue = $_POST['status'] ?? '';
+            $novoStatus = StatusAnuncio::tryFrom($statusValue);
+            if ($novoStatus) {
+                $anuncio->setStatus($novoStatus);
+            }
+
             if ($this->anuncioDAO->update($anuncio)) {
                 header("Location: index.php?action=meus_anuncios&success=updated");
                 exit;

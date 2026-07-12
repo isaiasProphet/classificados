@@ -99,6 +99,17 @@ a {
     color: var(--olx-orange);
 }
 
+.nav-user-bar {
+    position: relative;
+    display: flex;
+    align-items: center;
+    margin-right: 10px;
+}
+
+.nav-user-bar .nav-link {
+    color: rgba(255, 255, 255, 0.9) !important;
+}
+
 .nav-links {
     list-style: none;
     display: flex;
@@ -840,23 +851,60 @@ footer p {
         flex-wrap: wrap;
         height: auto;
         padding: 10px 0;
-        gap: 10px;
+        gap: 6px;
+    }
+
+    .brand {
+        flex-shrink: 0;
+        font-size: 1.1rem;
     }
 
     .search-bar {
         order: 3;
+        flex-basis: 100%;
         max-width: 100%;
         margin: 0;
-        width: 100%;
+    }
+
+    /* Greeting do usuário — linha própria no topo */
+    .nav-user-bar {
+        order: -1;
+        flex-basis: 100%;
+        justify-content: flex-end;
+        margin-right: 0;
+    }
+
+    .nav-user-bar .nav-link {
+        font-size: 0.82rem !important;
+        padding: 2px 0 !important;
     }
 
     .nav-links {
-        gap: 4px;
+        gap: 3px;
+        flex-wrap: nowrap;
+        justify-content: flex-end;
+        flex: 1;
+        min-width: 0;
+    }
+
+    .nav-links li {
+        flex-shrink: 0;
     }
 
     .nav-links a {
-        padding: 6px 10px;
-        font-size: 0.85rem;
+        padding: 6px 8px;
+        font-size: 0.8rem;
+        white-space: nowrap;
+    }
+
+    .btn-anunciar {
+        padding: 7px 14px;
+        font-size: 0.78rem;
+    }
+
+    .btn-outline {
+        padding: 6px 12px;
+        font-size: 0.8rem;
     }
 
     .grid {

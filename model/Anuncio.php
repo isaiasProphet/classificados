@@ -105,6 +105,10 @@ class Anuncio {
         return $this->status;
     }
 
+    public function setStatus(StatusAnuncio $status): void {
+        $this->status = $status;
+    }
+
     public function getCapaPath(): ?string {
         return $this->capaPath;
     }

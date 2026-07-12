@@ -50,6 +50,22 @@ class UsuarioDAO {
         return false;
     }
 
+    public function update(Usuario $usuario) {
+        $query = "UPDATE Usuario SET nome = :nome, email = :email, telefone = :telefone, senha = :senha, igreja_id = :igreja_id, cargo_igreja = :cargo_igreja, sobre_mim = :sobre_mim WHERE id = :id";
+        $stmt = $this->conn->prepare($query);
+
+        $stmt->bindValue(':nome', $usuario->getNome());
+        $stmt->bindValue(':email', $usuario->getEmail());
+        $stmt->bindValue(':senha', $usuario->getSenha());
+        $stmt->bindValue(':telefone', $usuario->getTelefone());
+        $stmt->bindValue(':igreja_id', $usuario->getIgrejaId() ?: null);
+        $stmt->bindValue(':cargo_igreja', $usuario->getCargoIgreja());
+        $stmt->bindValue(':sobre_mim', $usuario->getSobreMim());
+        $stmt->bindValue(':id', $usuario->getId());
+
+        return $stmt->execute();
+    }
+
     private function hydrateUsuario($row) {
         $dataCadastro = new DateTime($row['dataCadastro']);
         $permissao = PermissaoUsuario::from($row['permissoes']);
@@ -60,7 +76,10 @@ class UsuarioDAO {
             '', // Pass empty string to avoid rehashing
             $row['telefone'] ?? '',
             $dataCadastro,
-            $permissao
+            $permissao,
+            $row['igreja_id'] ?? 0,
+            $row['cargo_igreja'] ?? '',
+            $row['sobre_mim'] ?? ''
         );
         $usuario->setId($row['id']);
         

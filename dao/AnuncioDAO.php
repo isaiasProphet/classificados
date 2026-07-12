@@ -31,7 +31,7 @@ class AnuncioDAO {
     public function readPatrocinados($limit = 8) {
         $query = "SELECT a.* FROM Anuncio a
                   JOIN AnuncioPatrocinado ap ON a.id = ap.anuncioId
-                  WHERE ap.status = 'ativo' AND ap.dataFim >= NOW()
+                  WHERE ap.status = 'ativo' AND ap.dataFim >= NOW() AND a.status = 'ativo'
                   ORDER BY RAND() LIMIT :limit";
         $stmt = $this->conn->prepare($query);
         $stmt->bindValue(':limit', (int) $limit, PDO::PARAM_INT);
@@ -51,10 +51,10 @@ class AnuncioDAO {
     }
 
     public function readRecentes($limit = 8, $excludeIds = []) {
-        $query = "SELECT * FROM Anuncio ";
+        $query = "SELECT * FROM Anuncio WHERE status = 'ativo' ";
         if (!empty($excludeIds)) {
             $placeholders = implode(',', array_fill(0, count($excludeIds), '?'));
-            $query .= "WHERE id NOT IN ($placeholders) ";
+            $query .= "AND id NOT IN ($placeholders) ";
         }
         $query .= "ORDER BY dataCriacao DESC LIMIT " . (int)$limit;
         
@@ -82,7 +82,7 @@ class AnuncioDAO {
     }
 
     public function search($term) {
-        $query = "SELECT * FROM Anuncio WHERE titulo LIKE :term OR descricao LIKE :term ORDER BY dataCriacao DESC";
+        $query = "SELECT * FROM Anuncio WHERE status = 'ativo' AND (titulo LIKE :term OR descricao LIKE :term) ORDER BY dataCriacao DESC";
         $stmt = $this->conn->prepare($query);
         $searchTerm = "%{$term}%";
         $stmt->bindParam(":term", $searchTerm);
@@ -105,7 +105,7 @@ class AnuncioDAO {
         $query = "SELECT a.* FROM Anuncio a
                   JOIN SubCategoria sc ON a.subCategoriaId = sc.id
                   JOIN Categoria c ON sc.categoria_id = c.id
-                  WHERE c.nome = :categoriaNome
+                  WHERE c.nome = :categoriaNome AND a.status = 'ativo'
                   ORDER BY a.dataCriacao DESC";
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(":categoriaNome", $categoriaNome);
@@ -163,7 +163,7 @@ class AnuncioDAO {
 
     public function update(Anuncio $anuncio) {
         $query = "UPDATE Anuncio 
-                  SET titulo = :titulo, descricao = :descricao, subCategoriaId = :subCategoriaId, preco = :preco 
+                  SET titulo = :titulo, descricao = :descricao, subCategoriaId = :subCategoriaId, preco = :preco, status = :status 
                   WHERE id = :id AND usuarioId = :usuarioId";
         $stmt = $this->conn->prepare($query);
 
@@ -171,6 +171,7 @@ class AnuncioDAO {
         $stmt->bindValue(':descricao', $anuncio->getDescricao());
         $stmt->bindValue(':subCategoriaId', $anuncio->getSubCategoriaId() > 0 ? $anuncio->getSubCategoriaId() : null);
         $stmt->bindValue(':preco', $anuncio->getPreco());
+        $stmt->bindValue(':status', $anuncio->getStatus()->value);
         $stmt->bindValue(':id', $anuncio->getId());
         $stmt->bindValue(':usuarioId', $anuncio->getUsuarioId());
 

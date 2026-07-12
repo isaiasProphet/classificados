@@ -44,6 +44,20 @@
             </div>
 
             <div class="form-group">
+                <label for="status">Status do Anúncio</label>
+                <?php $statusAtual = $anuncio->getStatus()->value; ?>
+                <select id="status" name="status" class="form-control" required>
+                    <option value="ativo" <?= $statusAtual === 'ativo' ? 'selected' : '' ?>>🟢 Ativo</option>
+                    <option value="pausado" <?= $statusAtual === 'pausado' ? 'selected' : '' ?>>⏸️ Pausado</option>
+                    <option value="vendido" <?= $statusAtual === 'vendido' ? 'selected' : '' ?>>✅ Vendido</option>
+                    <option value="pendente_aprovacao" <?= $statusAtual === 'pendente_aprovacao' ? 'selected' : '' ?>>⏳ Pendente de Aprovação</option>
+                </select>
+                <small style="display: block; margin-top: 6px; color: var(--text-muted); font-size: 0.82rem;">
+                    Altere o status para pausar, reativar ou marcar como vendido.
+                </small>
+            </div>
+
+            <div class="form-group">
                 <label>Fotos do Anúncio</label>
                 <div class="alert alert-info" style="background: #e0f2fe; color: #0284c7; padding: 12px; border-radius: 8px; font-size: 0.9rem; border-left: 4px solid #0284c7;">
                     A funcionalidade de adicionar ou remover fotos após a publicação será disponibilizada em uma atualização futura. Por enquanto, as fotos originais serão mantidas.

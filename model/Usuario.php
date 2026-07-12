@@ -17,6 +17,13 @@ class Usuario {
     private DateTime $dataCadastro;
     private PermissaoUsuario $permissoes; // Atributo utilizando o Enum estruturado
 
+    // Novos atributos específicos para a comunidade
+    private int $igrejaId;
+    private string $cargoIgreja;
+    private string $sobreMim; 
+    private string $fotoPerfilPath;
+    private bool $ativo;
+    private DateTime $dataDesativacao;
 
     public function __construct(
         string $nome = '',
@@ -24,7 +31,12 @@ class Usuario {
         string $senha = '',
         string $telefone = '',
         ?DateTime $dataCadastro = null,
-        PermissaoUsuario $permissoes = PermissaoUsuario::ANUNCIANTE
+        PermissaoUsuario $permissoes = PermissaoUsuario::ANUNCIANTE,
+        int $igrejaId = 0,
+        string $cargoIgreja = '',
+        string $sobreMim = '',
+        string $fotoPerfilPath = '',
+        bool $ativo = true
     ) {
         $this->nome = $nome;
         $this->email = $email;
@@ -33,6 +45,12 @@ class Usuario {
         $this->telefone = $telefone;
         $this->dataCadastro = $dataCadastro ?? new DateTime(); // Se nulo, assume a data/hora atual do servidor
         $this->permissoes = $permissoes;
+        $this->igrejaId = $igrejaId;
+        $this->cargoIgreja = $cargoIgreja;
+        $this->sobreMim = $sobreMim;
+        $this->fotoPerfilPath = $fotoPerfilPath;
+        $this->ativo = $ativo;
+        $this->dataDesativacao = new DateTime(); 
     }
 
     // --- GETTERS E SETTERS ---
@@ -110,4 +128,55 @@ class Usuario {
     public function setPermissoes(PermissaoUsuario $permissoes): void {
         $this->permissoes = $permissoes;
     }
+
+    // --- Novos métodos para perfil comunitário ---
+
+    public function getIgrejaId(): int {
+        return $this->igrejaId;
+    }
+
+    public function setIgrejaId(int $igrejaId): void {
+        $this->igrejaId = $igrejaId;
+    }
+
+    public function getCargoIgreja(): string {
+        return $this->cargoIgreja;
+    }
+
+    public function setCargoIgreja(string $cargoIgreja): void {
+        $this->cargoIgreja = trim($cargoIgreja);
+    }
+
+    public function getSobreMim(): string {
+        return $this->sobreMim;
+    }
+
+    public function setSobreMim(string $sobreMim): void {
+        $this->sobreMim = trim($sobreMim);
+    }
+
+    public function getFotoPerfilPath(): string {
+        return $this->fotoPerfilPath;
+    }
+
+    public function setFotoPerfilPath(string $fotoPerfilPath): void {
+        $this->fotoPerfilPath = $fotoPerfilPath;
+    }
+
+    public function getAtivo(): bool {
+        return $this->ativo;
+    }
+
+    public function setAtivo(bool $ativo): void {
+        $this->ativo = $ativo;
+    }
+
+    public function getDataDesativacao(): DateTime {
+        return $this->dataDesativacao;
+    }
+
+    public function setDataDesativacao(DateTime $dataDesativacao): void {
+        $this->dataDesativacao = $dataDesativacao;
+    }
+
 }

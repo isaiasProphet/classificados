@@ -8,6 +8,8 @@
             <?php 
                 if ($_GET['error'] === 'email_exists') {
                     echo "Este e-mail já está em uso.";
+                } elseif ($_GET['error'] === 'weak_password') {
+                    echo "A senha deve ter pelo menos 8 caracteres, incluindo letras maiúsculas, minúsculas, números e caracteres especiais.";
                 } else {
                     echo "Ocorreu um erro ao criar a conta.";
                 }
@@ -29,7 +31,8 @@
 
             <div class="form-group">
                 <label for="senha">Senha</label>
-                <input type="password" id="senha" name="senha" class="form-control" required placeholder="••••••••" minlength="6">
+                <input type="password" id="senha" name="senha" class="form-control" required placeholder="••••••••" minlength="8" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[\W_]).{8,}" title="A senha deve ter pelo menos 8 caracteres, incluir uma letra maiúscula, uma minúscula, um número e um caractere especial.">
+                <small style="color: var(--text-muted); font-size: 0.8rem;">Mín. 8 caracteres, com maiúsculas, minúsculas, números e símbolos.</small>
             </div>
 
             <button type="submit" class="btn-primary" style="width: 100%; margin-top: 10px; padding: 12px;">Cadastrar</button>

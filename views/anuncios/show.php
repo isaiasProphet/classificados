@@ -73,7 +73,7 @@
                         💬 Faça login para usar o Chat
                     </button>
                 <?php endif; ?>
-                <button class="btn-outline" style="width: 100%; padding: 15px; font-size: 1.1rem; text-align: center; display: flex; justify-content: center; align-items: center; gap: 10px; color: var(--olx-purple); border: 2px solid var(--olx-purple); background: transparent; border-radius: 30px; cursor: pointer; transition: background 0.2s, color 0.2s;" onmouseover="this.style.background='var(--olx-purple)'; this.style.color='white';" onmouseout="this.style.background='transparent'; this.style.color='var(--olx-purple)';">
+                <button id="btn-telefone" onclick="mostrarTelefone()" class="btn-outline" style="width: 100%; padding: 15px; font-size: 1.1rem; text-align: center; display: flex; justify-content: center; align-items: center; gap: 10px; color: var(--olx-purple); border: 2px solid var(--olx-purple); background: transparent; border-radius: 30px; cursor: pointer; transition: background 0.2s, color 0.2s;" onmouseover="this.style.background='var(--olx-purple)'; this.style.color='white';" onmouseout="this.style.background='transparent'; this.style.color='var(--olx-purple)';">
                     📞 Ver telefone
                 </button>
             </div> 
@@ -192,6 +192,15 @@
             }
         })
         .catch(err => console.error(err));
+    }
+
+    function mostrarTelefone() {
+        const telefone = <?= json_encode($usuario->getTelefone()) ?>;
+        if (telefone && telefone.trim() !== "") {
+            document.getElementById('btn-telefone').innerHTML = '📞 ' + telefone;
+        } else {
+            alert('Não existe número cadastrado para este anunciante. Por favor, fale pelo chat!');
+        }
     }
 </script>
 

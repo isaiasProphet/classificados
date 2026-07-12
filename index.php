@@ -36,6 +36,12 @@ switch ($action) {
     case 'meus_anuncios':
         $usuarioController->meusAnuncios();
         break;
+    case 'meu_perfil':
+        $usuarioController->perfil();
+        break;
+    case 'atualizar_perfil':
+        $usuarioController->atualizarPerfil();
+        break;
     case 'create':
         $anuncioController->create();
         break;

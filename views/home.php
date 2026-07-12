@@ -25,7 +25,7 @@
                 <div class="category-icon">📚</div>
                 <span class="category-name">Livros</span>
             </a>
-            <a href="index.php?categoria=Pets" class="category-item">
+            <a href="index.php?categoria=Animais de estimação" class="category-item">
                 <div class="category-icon">🐶</div>
                 <span class="category-name">Pets</span>
             </a>
@@ -114,9 +114,7 @@
                 ?>
                 <div class="ad-card animate-fade-in" onclick="window.location='index.php?action=show&id=<?= $anuncio->getId() ?>';" style="animation-delay: <?= $index * 0.07 ?>s; cursor: pointer;">
                     <div class="ad-card-image">
-                        <span class="ad-card-status">
-                            <?= htmlspecialchars($anuncio->getStatus()->value ?? '') ?>
-                        </span>
+                        
                         <?php 
                         $capa = $anuncio->getCapaPath();
                         

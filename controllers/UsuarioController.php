@@ -41,6 +41,11 @@ class UsuarioController {
             $email = trim($_POST['email'] ?? '');
             $senha = $_POST['senha'] ?? '';
 
+            if (strlen($senha) < 8 || !preg_match('/[A-Z]/', $senha) || !preg_match('/[a-z]/', $senha) || !preg_match('/[0-9]/', $senha) || !preg_match('/[\W_]/', $senha)) {
+                header("Location: index.php?action=register&error=weak_password");
+                exit;
+            }
+
             // Check if email exists
             if ($this->usuarioDAO->readByEmail($email)) {
                 header("Location: index.php?action=register&error=email_exists");
@@ -85,5 +90,74 @@ class UsuarioController {
         $anuncios = $anuncioDAO->readByUsuarioId($_SESSION['usuario_id']);
         
         require_once __DIR__ . '/../views/usuarios/meus_anuncios.php';
+    }
+
+    public function perfil() {
+        if (!isset($_SESSION['usuario_id'])) {
+            header("Location: index.php?action=login");
+            exit;
+        }
+
+        require_once __DIR__ . '/../dao/UsuarioDAO.php';
+        $usuarioDAO = new UsuarioDAO();
+        $usuario = $usuarioDAO->readById($_SESSION['usuario_id']);
+        
+        require_once __DIR__ . '/../views/usuarios/perfil.php';
+    }
+
+    public function atualizarPerfil() {
+        if (!isset($_SESSION['usuario_id']) || $_SERVER['REQUEST_METHOD'] !== 'POST') {
+            header("Location: index.php?action=login");
+            exit;
+        }
+
+        require_once __DIR__ . '/../dao/UsuarioDAO.php';
+        $usuarioDAO = new UsuarioDAO();
+        $usuario = $usuarioDAO->readById($_SESSION['usuario_id']);
+
+        if ($usuario) {
+            $usuario->setNome(trim($_POST['nome'] ?? $usuario->getNome()));
+            
+            // Check if email changed and if new email is already taken
+            $novoEmail = trim($_POST['email'] ?? $usuario->getEmail());
+            if ($novoEmail !== $usuario->getEmail()) {
+                $existente = $usuarioDAO->readByEmail($novoEmail);
+                if ($existente) {
+                    header("Location: index.php?action=meu_perfil&error=email_exists");
+                    exit;
+                }
+                $usuario->setEmail($novoEmail);
+            }
+
+            $usuario->setTelefone(trim($_POST['telefone'] ?? $usuario->getTelefone()));
+            $usuario->setCargoIgreja(trim($_POST['cargo_igreja'] ?? $usuario->getCargoIgreja()));
+            $usuario->setSobreMim(trim($_POST['sobre_mim'] ?? $usuario->getSobreMim()));
+
+            $novaSenha = $_POST['senha'] ?? '';
+            if (!empty($novaSenha)) {
+                $senhaAtual = $_POST['senha_atual'] ?? '';
+                if (!$usuario->verificarSenha($senhaAtual)) {
+                    header("Location: index.php?action=meu_perfil&error=invalid_current_password");
+                    exit;
+                }
+                if (strlen($novaSenha) < 8 || !preg_match('/[A-Z]/', $novaSenha) || !preg_match('/[a-z]/', $novaSenha) || !preg_match('/[0-9]/', $novaSenha) || !preg_match('/[\W_]/', $novaSenha)) {
+                    header("Location: index.php?action=meu_perfil&error=weak_password");
+                    exit;
+                }
+                $usuario->setSenha($novaSenha);
+            }
+
+            if ($usuarioDAO->update($usuario)) {
+                $_SESSION['usuario_nome'] = $usuario->getNome(); // Atualiza nome na sessão
+                header("Location: index.php?action=meu_perfil&success=updated");
+                exit;
+            } else {
+                header("Location: index.php?action=meu_perfil&error=update_failed");
+                exit;
+            }
+        }
+        
+        header("Location: index.php");
+        exit;
     }
 }
