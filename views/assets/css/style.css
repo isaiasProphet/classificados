@@ -256,17 +256,17 @@ p {
    ============================================ */
 .categories-section {
     background: var(--bg-white);
-    padding: 24px 0;
+    padding: 2px 0;
     border-bottom: 1px solid var(--border-color);
-    margin-bottom: 30px;
+    margin-bottom: 5px;
 }
 
 .categories-grid {
     display: flex;
     justify-content: center;
-    gap: 12px;
+    gap: 8px;
     overflow-x: auto;
-    padding-bottom: 8px;
+    padding-bottom: 5px;
     scrollbar-width: thin;
 }
 
@@ -274,9 +274,9 @@ p {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 8px;
+    gap: 4px;
     min-width: 90px;
-    padding: 12px 8px;
+    padding: 6px 8px;
     border-radius: var(--radius-lg);
     cursor: pointer;
     transition: background 0.2s ease;
@@ -1050,33 +1050,60 @@ footer p {
 
 .message-bubble {
     max-width: 70%;
-    padding: 12px 16px;
-    border-radius: 15px;
+    padding: 10px 16px 12px;
+    border-radius: 18px;
     font-size: 0.95em;
     line-height: 1.4;
     position: relative;
     word-wrap: break-word;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+    animation: fadeInMsg 0.25s ease;
+}
+
+@keyframes fadeInMsg {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
 .msg-received {
-    background: #fff;
-    border: 1px solid #e0e0e0;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
     align-self: flex-start;
-    border-bottom-left-radius: 2px;
+    border-top-left-radius: 4px;
+    color: #1e293b;
 }
 
 .msg-sent {
-    background: #007bff;
+    background: linear-gradient(135deg, #6e0ad6, #8b3ce6);
     color: #fff;
     align-self: flex-end;
-    border-bottom-right-radius: 2px;
+    border-top-right-radius: 4px;
+}
+
+.message-sender {
+    font-size: 0.78em;
+    font-weight: 700;
+    margin-bottom: 4px;
+    letter-spacing: 0.3px;
+}
+
+.sender-other {
+    color: #16a34a;
+}
+
+.sender-you {
+    color: rgba(255, 255, 255, 0.8);
 }
 
 .message-time {
-    font-size: 0.75em;
-    opacity: 0.7;
-    margin-top: 5px;
+    font-size: 0.72em;
+    opacity: 0.6;
+    margin-top: 6px;
     text-align: right;
+}
+
+.msg-received .message-time {
+    color: #94a3b8;
 }
 
 .chat-input-area {
@@ -1088,7 +1115,8 @@ footer p {
 }
 
 .chat-input-area input {
-    flex-grow: 1;
+    flex: 1 1 0;
+    min-width: 0;
     padding: 10px 15px;
     border: 1px solid #ccc;
     border-radius: 20px;
@@ -1096,7 +1124,7 @@ footer p {
 }
 
 .chat-input-area button {
-    background: #007bff;
+    background: linear-gradient(135deg, #6e0ad6, #8b3ce6);
     color: #fff;
     border: none;
     padding: 10px 20px;
@@ -1107,7 +1135,7 @@ footer p {
 }
 
 .chat-input-area button:hover {
-    background: #0056b3;
+    background: linear-gradient(135deg, #5a08b0, #7a2ed4);
 }
 
 .no-chat-selected {
@@ -1129,7 +1157,8 @@ footer p {
         height: 85vh;
     }
 
-    .painel-esquerdo, .painel-direito {
+    .painel-esquerdo,
+    .painel-direito {
         width: 100%;
         border-right: none;
     }
@@ -1153,5 +1182,36 @@ footer p {
     /* Show back button on mobile */
     .btn-back-mobile {
         display: inline-block !important;
+    }
+
+    /* Chat input area ajuste mobile */
+    .chat-input-area {
+        padding: 10px;
+        gap: 8px;
+    }
+
+    .chat-input-area input {
+        padding: 9px 12px;
+        font-size: 0.9em;
+    }
+
+    .chat-input-area button {
+        padding: 9px 14px;
+        font-size: 0.85em;
+        white-space: nowrap;
+        flex-shrink: 0;
+    }
+
+    /* Centralizar dialog do chat com o vendedor na tela de detalhes (show.php) */
+    #chatModal {
+        top: 50% !important;
+        left: 50% !important;
+        right: auto !important;
+        bottom: auto !important;
+        transform: translate(-50%, -50%) !important;
+        width: 90% !important;
+        max-width: 400px;
+        height: 80vh !important;
+        max-height: 600px;
     }
 }

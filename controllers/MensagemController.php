@@ -70,10 +70,11 @@ class MensagemController {
         $result = [];
         foreach ($mensagens as $msg) {
             $result[] = [
-                'id' => $msg->getId(),
-                'texto' => htmlspecialchars($msg->getTexto()),
-                'data_envio' => $msg->getDataEnvio()->format('d/m/Y H:i'),
-                'remetente_usuario_id' => $msg->getRemetenteUsuarioId()
+                'id' => $msg['id'],
+                'texto' => htmlspecialchars($msg['texto']),
+                'data_envio' => (new DateTime($msg['data_envio']))->format('d/m/Y H:i'),
+                'remetente_usuario_id' => $msg['remetente_usuario_id'],
+                'nome_remetente' => $msg['nome_remetente']
             ];
         }
 

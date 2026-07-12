@@ -30,12 +30,15 @@ class MensagemDAO {
     }
 
     // Busca todas as mensagens de uma conversa (entre 2 usuarios sobre 1 anuncio)
+    // Retorna array associativo com nome do remetente incluso
     public function readChat($usuarioLogadoId, $outroUsuarioId, $anuncioId) {
-        $query = "SELECT * FROM Mensagem 
-                  WHERE anuncio_id = :anuncioId 
-                  AND ((remetente_usuario_id = :u1 AND destinatario_usuario_id = :u2) 
-                       OR (remetente_usuario_id = :u2 AND destinatario_usuario_id = :u1))
-                  ORDER BY data_envio ASC";
+        $query = "SELECT m.*, u.nome AS nome_remetente
+                  FROM Mensagem m
+                  JOIN Usuario u ON u.id = m.remetente_usuario_id
+                  WHERE m.anuncio_id = :anuncioId 
+                  AND ((m.remetente_usuario_id = :u1 AND m.destinatario_usuario_id = :u2) 
+                       OR (m.remetente_usuario_id = :u2 AND m.destinatario_usuario_id = :u1))
+                  ORDER BY m.data_envio ASC";
                   
         $stmt = $this->conn->prepare($query);
         $stmt->bindValue(':anuncioId', $anuncioId);
@@ -43,18 +46,7 @@ class MensagemDAO {
         $stmt->bindValue(':u2', $outroUsuarioId);
         $stmt->execute();
 
-        $mensagens = [];
-        while ($row = $stmt->fetch()) {
-            $mensagens[] = new Mensagem(
-                $row['id'],
-                $row['remetente_usuario_id'],
-                $row['destinatario_usuario_id'],
-                $row['anuncio_id'],
-                $row['texto'],
-                new DateTime($row['data_envio'])
-            );
-        }
-        return $mensagens;
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
     public function readChats($usuarioId) {
         $query = "SELECT 

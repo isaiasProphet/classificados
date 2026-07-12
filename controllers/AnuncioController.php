@@ -25,10 +25,19 @@ class AnuncioController {
 
     public function index() {
         $search = isset($_GET['search']) ? trim($_GET['search']) : '';
+        $categoria = isset($_GET['categoria']) ? trim($_GET['categoria']) : '';
+        
+        $anunciosPatrocinados = [];
+        $anuncios = [];
+
         if ($search !== '') {
             $anuncios = $this->anuncioDAO->search($search);
+        } elseif ($categoria !== '') {
+            $anuncios = $this->anuncioDAO->readByCategoriaName($categoria);
         } else {
-            $anuncios = $this->anuncioDAO->readAll();
+            $anunciosPatrocinados = $this->anuncioDAO->readPatrocinados(8);
+            $patrocinadosIds = array_map(function($a) { return $a->getId(); }, $anunciosPatrocinados);
+            $anuncios = $this->anuncioDAO->readRecentes(8, $patrocinadosIds);
         }
         require_once __DIR__ . '/../views/home.php';
     }

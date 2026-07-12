@@ -149,13 +149,16 @@
                 if(data.success) {
                     chatMessages.innerHTML = '';
                     const myId = <?= isset($_SESSION['usuario_id']) ? $_SESSION['usuario_id'] : 0 ?>;
+                    const vendedorNome = <?= json_encode($usuario->getNome()) ?>;
                     
                     data.mensagens.forEach(msg => {
                         const isMine = msg.remetenteUsuarioId === myId;
                         const align = isMine ? 'align-self: flex-end; background: var(--olx-purple); color: white;' : 'align-self: flex-start; background: #e0e0e0; color: #333;';
+                        const senderName = isMine ? 'Você' : vendedorNome;
                         
                         chatMessages.innerHTML += `
                             <div style="max-width: 80%; padding: 10px 15px; border-radius: 15px; ${align}">
+                                <div style="font-size: 0.75rem; font-weight: bold; margin-bottom: 4px; opacity: 0.9;">${senderName}</div>
                                 <div>${msg.texto}</div>
                                 <div style="font-size: 0.7rem; margin-top: 5px; opacity: 0.8; text-align: right;">${msg.data_envio}</div>
                             </div>

@@ -28,11 +28,87 @@ class AnuncioDAO {
         return $anuncios;
     }
 
+    public function readPatrocinados($limit = 8) {
+        $query = "SELECT a.* FROM Anuncio a
+                  JOIN AnuncioPatrocinado ap ON a.id = ap.anuncioId
+                  WHERE ap.status = 'ativo' AND ap.dataFim >= NOW()
+                  ORDER BY RAND() LIMIT :limit";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindValue(':limit', (int) $limit, PDO::PARAM_INT);
+        $stmt->execute();
+
+        $anuncios = [];
+        $imagemDAO = new ImagemAnuncioDAO();
+        while ($row = $stmt->fetch()) {
+            $anuncio = $this->hydrateAnuncio($row);
+            $capa = $imagemDAO->findCapaByAnuncioId($anuncio->getId());
+            if ($capa) {
+                $anuncio->setCapaPath($capa->getCaminhoArquivo());
+            }
+            $anuncios[] = $anuncio;
+        }
+        return $anuncios;
+    }
+
+    public function readRecentes($limit = 8, $excludeIds = []) {
+        $query = "SELECT * FROM Anuncio ";
+        if (!empty($excludeIds)) {
+            $placeholders = implode(',', array_fill(0, count($excludeIds), '?'));
+            $query .= "WHERE id NOT IN ($placeholders) ";
+        }
+        $query .= "ORDER BY dataCriacao DESC LIMIT " . (int)$limit;
+        
+        $stmt = $this->conn->prepare($query);
+        
+        if (!empty($excludeIds)) {
+            foreach ($excludeIds as $index => $id) {
+                $stmt->bindValue($index + 1, $id, PDO::PARAM_INT);
+            }
+        }
+        
+        $stmt->execute();
+
+        $anuncios = [];
+        $imagemDAO = new ImagemAnuncioDAO();
+        while ($row = $stmt->fetch()) {
+            $anuncio = $this->hydrateAnuncio($row);
+            $capa = $imagemDAO->findCapaByAnuncioId($anuncio->getId());
+            if ($capa) {
+                $anuncio->setCapaPath($capa->getCaminhoArquivo());
+            }
+            $anuncios[] = $anuncio;
+        }
+        return $anuncios;
+    }
+
     public function search($term) {
         $query = "SELECT * FROM Anuncio WHERE titulo LIKE :term OR descricao LIKE :term ORDER BY dataCriacao DESC";
         $stmt = $this->conn->prepare($query);
         $searchTerm = "%{$term}%";
         $stmt->bindParam(":term", $searchTerm);
+        $stmt->execute();
+
+        $anuncios = [];
+        $imagemDAO = new ImagemAnuncioDAO();
+        while ($row = $stmt->fetch()) {
+            $anuncio = $this->hydrateAnuncio($row);
+            $capa = $imagemDAO->findCapaByAnuncioId($anuncio->getId());
+            if ($capa) {
+                $anuncio->setCapaPath($capa->getCaminhoArquivo());
+            }
+            $anuncios[] = $anuncio;
+        }
+        return $anuncios;
+    }
+
+    public function readByCategoriaName($categoriaNome) {
+        $query = "SELECT a.* FROM Anuncio a
+                  JOIN SubCategoria sc ON a.subCategoriaId = sc.id
+                  JOIN Categoria c ON sc.categoria_id = c.id
+                  WHERE c.nome = :categoriaNome
+                  ORDER BY a.dataCriacao DESC";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(":categoriaNome", $categoriaNome);
         $stmt->execute();
 
         $anuncios = [];

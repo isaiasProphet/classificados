@@ -109,7 +109,10 @@ async function loadMessages() {
                 const msgEl = document.createElement('div');
                 msgEl.className = `message-bubble ${isSent ? 'msg-sent' : 'msg-received'}`;
                 
+                const senderName = isSent ? 'Você' : msg.nome_remetente;
+
                 msgEl.innerHTML = `
+                    <div class="message-sender ${isSent ? 'sender-you' : 'sender-other'}">${senderName}</div>
                     <div>${msg.texto}</div>
                     <div class="message-time">${msg.data_envio}</div>
                 `;
