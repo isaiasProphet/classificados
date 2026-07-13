@@ -52,4 +52,14 @@ class Igreja {
     public function setBairro_id(?int $bairro_id): void {
         $this->bairro_id = $bairro_id;
     }
+
+    private ?string $bairroNome = null;
+
+    public function getBairroNome(): ?string {
+        return $this->bairroNome;
+    }
+
+    public function setBairroNome(?string $bairroNome): void {
+        $this->bairroNome = $bairroNome;
+    }
 }

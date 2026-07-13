@@ -40,6 +40,20 @@
                         </div>
                         
                         <div class="mb-3">
+                            <label for="igreja_id" class="form-label fw-semibold" style="color: #4a4a4a;">Igreja</label>
+                            <select class="form-control" id="igreja_id" name="igreja_id" style="border-radius: 8px;">
+                                <option value="0">Selecione a sua igreja</option>
+                                <?php if (!empty($igrejas)): ?>
+                                    <?php foreach ($igrejas as $igreja): ?>
+                                        <option value="<?= $igreja->getId() ?>" <?= $usuario->getIgrejaId() == $igreja->getId() ? 'selected' : '' ?>>
+                                            <?= htmlspecialchars($igreja->getNome()) ?>
+                                        </option>
+                                    <?php endforeach; ?>
+                                <?php endif; ?>
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
                             <label for="cargo_igreja" class="form-label fw-semibold" style="color: #4a4a4a;">Cargo na Igreja (Opcional)</label>
                             <input type="text" class="form-control" id="cargo_igreja" name="cargo_igreja" value="<?= htmlspecialchars($usuario->getCargoIgreja()) ?>" style="border-radius: 8px;">
                         </div>

@@ -101,6 +101,10 @@ class UsuarioController {
         require_once __DIR__ . '/../dao/UsuarioDAO.php';
         $usuarioDAO = new UsuarioDAO();
         $usuario = $usuarioDAO->readById($_SESSION['usuario_id']);
+
+        require_once __DIR__ . '/../dao/IgrejaDAO.php';
+        $igrejaDAO = new IgrejaDAO();
+        $igrejas = $igrejaDAO->readAll();
         
         require_once __DIR__ . '/../views/usuarios/perfil.php';
     }
@@ -130,6 +134,9 @@ class UsuarioController {
             }
 
             $usuario->setTelefone(trim($_POST['telefone'] ?? $usuario->getTelefone()));
+            if (isset($_POST['igreja_id'])) {
+                $usuario->setIgrejaId(intval($_POST['igreja_id']));
+            }
             $usuario->setCargoIgreja(trim($_POST['cargo_igreja'] ?? $usuario->getCargoIgreja()));
             $usuario->setSobreMim(trim($_POST['sobre_mim'] ?? $usuario->getSobreMim()));
 

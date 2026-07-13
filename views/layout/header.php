@@ -38,8 +38,13 @@
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end shadow-sm user-dropdown-menu" aria-labelledby="userDropdown">
                     <li><a class="dropdown-item" href="index.php?action=meu_perfil" style="color: #1a1a2e !important;">Meu Perfil</a></li>
+                    <?php if ($usuarioLogado && $usuarioLogado->getPermissoes() === PermissaoUsuario::ADMIN): ?>
+                        <li><a class="dropdown-item" href="index.php?action=admin" style="color: #1a1a2e !important;">Admin</a></li>
+                    <?php endif; ?>
                     <?php if (!$isCliente): ?>
-                    <li><a class="dropdown-item" href="index.php?action=meus_anuncios" style="color: #1a1a2e !important;">Meus anúncios</a></li>
+                        <li><a class="dropdown-item" href="index.php?action=meus_anuncios" style="color: #1a1a2e !important;">Meus anúncios</a></li>
+                    <?php endif; ?>
+                    <?php if ($isCliente): ?>
                     <li><a class="dropdown-item" href="index.php?action=listar_chats" style="color: #1a1a2e !important;">Chat</a></li>
                     <?php endif; ?>
                     <li><hr class="dropdown-divider"></li>

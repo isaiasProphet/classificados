@@ -12,11 +12,27 @@ $usuarioController = new UsuarioController();
 require_once __DIR__ . '/controllers/MensagemController.php';
 $mensagemController = new MensagemController();
 
+require_once __DIR__ . '/controllers/AdminController.php';
+$adminController = new AdminController();
+
+
 switch ($action) {
     case 'get_subcategorias':
         require_once __DIR__ . '/controllers/CategoriaController.php';
         $categoriaController = new CategoriaController();
         $categoriaController->getSubcategorias();
+        break;
+    case 'admin':
+        $adminController->admin();
+        break;
+    case 'admin_igreja_add':
+        $adminController->igrejaAdd();
+        break;
+    case 'admin_igreja_store':
+        $adminController->igrejaStore();
+        break;
+    case 'admin_igreja_list':
+        $adminController->igrejaList();
         break;
     case 'login':
         $usuarioController->login();
