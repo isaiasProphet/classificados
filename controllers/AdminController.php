@@ -98,5 +98,27 @@ class AdminController {
         require_once __DIR__ . '/../views/admin/igreja_list.php';
     }
 
+    public function bairrosList() {
+        if (!isset($_SESSION['usuario_id'])) {
+            header("Location: index.php?action=login");
+            exit;
+        }
+
+        require_once __DIR__ . '/../dao/UsuarioDAO.php';
+        $usuarioDAO = new UsuarioDAO();
+        $usuario = $usuarioDAO->readById($_SESSION['usuario_id']);
+        if ($usuario && $usuario->getPermissoes() !== PermissaoUsuario::ADMIN) {
+            header("Location: index.php?error=unauthorized");
+            exit;
+        }
+
+        require_once __DIR__ . '/../dao/BairroDAO.php';
+        $bairroDAO = new BairroDAO();
+        $bairros = $bairroDAO->readAll();
+
+        require_once __DIR__ . '/../views/admin/bairros_list.php';
+    }
+
+
 
 }

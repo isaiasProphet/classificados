@@ -34,6 +34,9 @@ switch ($action) {
     case 'admin_igreja_list':
         $adminController->igrejaList();
         break;
+    case 'admin_bairros_list':
+        $adminController->bairrosList();
+        break;
     case 'login':
         $usuarioController->login();
         break;
@@ -84,6 +87,9 @@ switch ($action) {
         break;
     case 'api_listar_chats':
         $mensagemController->apiListarChats();
+        break;
+    case 'missao':
+        require_once __DIR__ . '/views/missao.php';
         break;
     case 'index':
     default:

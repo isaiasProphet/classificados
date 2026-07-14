@@ -15,14 +15,12 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav">
+       
         <li class="nav-item">
-          <a class="nav-link" href="index.php?action=admin_igreja_add">Adicionar Igreja</a>
+          <a class="nav-link" href="index.php?action=admin_igreja_list">Igrejas</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="index.php?action=admin_igreja_list">Listar Igrejas</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Bairros</a>
+          <a class="nav-link" href="index.php?action=admin_bairros_list">Bairros</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="#">Anúncios</a>
