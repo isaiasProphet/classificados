@@ -10,6 +10,8 @@
                     echo "E-mail ou senha incorretos.";
                 } elseif ($_GET['error'] === 'not_logged_in') {
                     echo "Você precisa estar logado para acessar esta página.";
+                } elseif ($_GET['error'] === 'account_inactive') {
+                    echo "Sua conta foi desativada. Entre em contato com o suporte.";
                 } else {
                     echo "Ocorreu um erro.";
                 }

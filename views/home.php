@@ -136,9 +136,7 @@
                             <?= htmlspecialchars($anuncio->getDescricao()) ?>
                         </p>
                         <div class="ad-card-footer">
-                            <span class="ad-card-views">
-                                👁️ <?= $anuncio->getVisualizacoes() ?> visitas
-                            </span>
+                            
                             <a href="index.php?action=show&id=<?= $anuncio->getId() ?>" class="ad-card-action">Ver detalhes →</a>
                         </div>
                     </div>

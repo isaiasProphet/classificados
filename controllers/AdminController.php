@@ -119,6 +119,124 @@ class AdminController {
         require_once __DIR__ . '/../views/admin/bairros_list.php';
     }
 
+    public function usuariosList() {
+        if (!isset($_SESSION['usuario_id'])) {
+            header("Location: index.php?action=login");
+            exit;
+        }
 
+        require_once __DIR__ . '/../dao/UsuarioDAO.php';
+        $usuarioDAO = new UsuarioDAO();
+        $usuarioLogado = $usuarioDAO->readById($_SESSION['usuario_id']);
+        if ($usuarioLogado && $usuarioLogado->getPermissoes() !== PermissaoUsuario::ADMIN) {
+            header("Location: index.php?error=unauthorized");
+            exit;
+        }
+
+        $usuarios = $usuarioDAO->readAll();
+
+        require_once __DIR__ . '/../views/admin/usuarios_list.php';
+    }
+
+
+    public function usuarioEdit() {
+        if (!isset($_SESSION['usuario_id'])) {
+            header("Location: index.php?action=login");
+            exit;
+        }
+
+        $usuarioDAO = new UsuarioDAO();
+        $usuarioLogado = $usuarioDAO->readById($_SESSION['usuario_id']);
+        if ($usuarioLogado && $usuarioLogado->getPermissoes() !== PermissaoUsuario::ADMIN) {
+            header("Location: index.php?error=unauthorized");
+            exit;
+        }
+
+        $id = $_GET['id'] ?? null;
+        if (!$id) {
+            header("Location: index.php?action=admin_usuarios_list");
+            exit;
+        }
+
+        $usuarioEditar = $usuarioDAO->readById($id);
+        if (!$usuarioEditar) {
+            header("Location: index.php?action=admin_usuarios_list&error=notfound");
+            exit;
+        }
+
+        require_once __DIR__ . '/../dao/IgrejaDAO.php';
+        $igrejaDAO = new IgrejaDAO();
+        $igrejas = $igrejaDAO->readAll();
+
+        require_once __DIR__ . '/../views/admin/usuario_edit.php';
+    }
+
+    public function usuarioUpdate() {
+        if (!isset($_SESSION['usuario_id'])) {
+            header("Location: index.php?action=login");
+            exit;
+        }
+
+        $usuarioDAO = new UsuarioDAO();
+        $usuarioLogado = $usuarioDAO->readById($_SESSION['usuario_id']);
+        if ($usuarioLogado && $usuarioLogado->getPermissoes() !== PermissaoUsuario::ADMIN) {
+            header("Location: index.php?error=unauthorized");
+            exit;
+        }
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $id = $_POST['id'] ?? null;
+            if (!$id) {
+                header("Location: index.php?action=admin_usuarios_list");
+                exit;
+            }
+
+            $usuarioEditar = $usuarioDAO->readById($id);
+            if ($usuarioEditar) {
+                $usuarioEditar->setNome(trim($_POST['nome'] ?? $usuarioEditar->getNome()));
+                $usuarioEditar->setEmail(trim($_POST['email'] ?? $usuarioEditar->getEmail()));
+                $usuarioEditar->setTelefone(trim($_POST['telefone'] ?? $usuarioEditar->getTelefone()));
+                
+                if (isset($_POST['permissoes'])) {
+                    $usuarioEditar->setPermissoes(PermissaoUsuario::from($_POST['permissoes']));
+                }
+
+                if (isset($_POST['igreja_id'])) {
+                    $usuarioEditar->setIgrejaId(intval($_POST['igreja_id']));
+                }
+                
+                if (!empty($_POST['senha'])) {
+                    $usuarioEditar->setSenha($_POST['senha']);
+                }
+
+                $usuarioDAO->update($usuarioEditar);
+            }
+        }
+
+        header("Location: index.php?action=admin_usuarios_list&success=updated");
+        exit;
+    }
+
+    public function usuarioDelete() {
+        if (!isset($_SESSION['usuario_id'])) {
+            header("Location: index.php?action=login");
+            exit;
+        }
+
+        $usuarioDAO = new UsuarioDAO();
+        $usuarioLogado = $usuarioDAO->readById($_SESSION['usuario_id']);
+        if ($usuarioLogado && $usuarioLogado->getPermissoes() !== PermissaoUsuario::ADMIN) {
+            header("Location: index.php?error=unauthorized");
+            exit;
+        }
+
+        $id = $_GET['id'] ?? null;
+        if ($id) {
+            $usuarioDAO->deactivate($id);
+        }
+
+        header("Location: index.php?action=admin_usuarios_list&success=deleted");
+        exit;
+    }
 
 }

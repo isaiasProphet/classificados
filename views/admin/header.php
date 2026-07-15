@@ -25,6 +25,9 @@
         <li class="nav-item">
           <a class="nav-link" href="#">Anúncios</a>
         </li>
+        <li class="nav-item">
+          <a class="nav-link" href="index.php?action=admin_usuarios_list">Usuários</a>
+        </li>
       
       </ul>
     </div>

@@ -37,6 +37,18 @@ switch ($action) {
     case 'admin_bairros_list':
         $adminController->bairrosList();
         break;
+    case 'admin_usuarios_list':
+        $adminController->usuariosList();
+        break;
+    case 'admin_usuario_edit':
+        $adminController->usuarioEdit();
+        break;
+    case 'admin_usuario_update':
+        $adminController->usuarioUpdate();
+        break;
+    case 'admin_usuario_delete':
+        $adminController->usuarioDelete();
+        break;
     case 'login':
         $usuarioController->login();
         break;

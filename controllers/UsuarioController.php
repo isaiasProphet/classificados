@@ -20,6 +20,11 @@ class UsuarioController {
             $usuario = $this->usuarioDAO->readByEmail($email);
 
             if ($usuario && $usuario->verificarSenha($senha)) {
+                if (!$usuario->getAtivo()) {
+                    header("Location: index.php?action=login&error=account_inactive");
+                    exit;
+                }
+
                 $_SESSION['usuario_id'] = $usuario->getId();
                 $_SESSION['usuario_nome'] = $usuario->getNome();
                 header("Location: index.php");
