@@ -239,4 +239,25 @@ class AdminController {
         exit;
     }
 
+    public function anunciosList() {
+        if (!isset($_SESSION['usuario_id'])) {
+            header("Location: index.php?action=login");
+            exit;
+        }
+
+        require_once __DIR__ . '/../dao/UsuarioDAO.php';
+        $usuarioDAO = new UsuarioDAO();
+        $usuarioLogado = $usuarioDAO->readById($_SESSION['usuario_id']);
+        if ($usuarioLogado && $usuarioLogado->getPermissoes() !== PermissaoUsuario::ADMIN) {
+            header("Location: index.php?error=unauthorized");
+            exit;
+        }
+
+        require_once __DIR__ . '/../dao/AnuncioDAO.php';
+        $anuncioDAO = new AnuncioDAO();
+        $anuncios = $anuncioDAO->readAll();
+
+        require_once __DIR__ . '/../views/admin/anuncios_list.php';
+    }
+
 }

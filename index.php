@@ -40,6 +40,9 @@ switch ($action) {
     case 'admin_usuarios_list':
         $adminController->usuariosList();
         break;
+    case 'admin_anuncios_list':
+        $adminController->anunciosList();
+        break;
     case 'admin_usuario_edit':
         $adminController->usuarioEdit();
         break;

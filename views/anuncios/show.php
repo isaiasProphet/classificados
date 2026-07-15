@@ -152,7 +152,7 @@
                     const vendedorNome = <?= json_encode($usuario->getNome()) ?>;
                     
                     data.mensagens.forEach(msg => {
-                        const isMine = msg.remetenteUsuarioId === myId;
+                        const isMine = Number(msg.remetente_usuario_id) === myId;
                         const align = isMine ? 'align-self: flex-end; background: var(--olx-purple); color: white;' : 'align-self: flex-start; background: #e0e0e0; color: #333;';
                         const senderName = isMine ? 'Você' : vendedorNome;
                         
