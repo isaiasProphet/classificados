@@ -23,7 +23,22 @@
 
             <div class="card shadow-sm border-0" style="border-radius: 12px; background: #fff;">
                 <div class="card-body p-4">
-                    <form action="index.php?action=atualizar_perfil" method="POST">
+                    <form action="index.php?action=atualizar_perfil" method="POST" enctype="multipart/form-data">
+                        
+                        <div class="mb-4 text-center">
+                            <label for="foto_perfil" class="form-label d-block fw-semibold" style="color: #4a4a4a; cursor: pointer;">
+                                <?php if ($usuario->getFotoPerfilPath()): ?>
+                                    <img src="<?= htmlspecialchars($usuario->getFotoPerfilPath()) ?>" alt="Foto de Perfil" class="rounded-circle mb-2" style="width: 120px; height: 120px; object-fit: cover; border: 3px solid var(--olx-purple);">
+                                <?php else: ?>
+                                    <div class="rounded-circle mb-2 d-inline-flex align-items-center justify-content-center" style="width: 120px; height: 120px; background: rgba(0,0,0,0.1); border: 3px solid var(--olx-purple); font-size: 3rem; color: var(--olx-purple);">
+                                        <?= mb_substr(htmlspecialchars($usuario->getNome()), 0, 1) ?>
+                                    </div>
+                                <?php endif; ?>
+                                <div class="text-primary mt-1" style="font-size: 0.9rem;">Alterar foto de perfil</div>
+                            </label>
+                            <input type="file" class="form-control d-none" id="foto_perfil" name="foto_perfil" accept="image/jpeg, image/png, image/webp" onchange="previewImage(event)">
+                        </div>
+
                         <div class="mb-3">
                             <label for="nome" class="form-label fw-semibold" style="color: #4a4a4a;">Nome Completo</label>
                             <input type="text" class="form-control" id="nome" name="nome" value="<?= htmlspecialchars($usuario->getNome()) ?>" required style="border-radius: 8px;">
@@ -83,5 +98,35 @@
         </div>
     </div>
 </div>
+
+<script>
+function previewImage(event) {
+    const input = event.target;
+    if (input.files && input.files[0]) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const label = document.querySelector('label[for="foto_perfil"]');
+            const img = label.querySelector('img');
+            if (img) {
+                img.src = e.target.result;
+            } else {
+                const div = label.querySelector('div.rounded-circle');
+                if (div) {
+                    const newImg = document.createElement('img');
+                    newImg.src = e.target.result;
+                    newImg.alt = "Foto de Perfil";
+                    newImg.className = "rounded-circle mb-2";
+                    newImg.style.width = "120px";
+                    newImg.style.height = "120px";
+                    newImg.style.objectFit = "cover";
+                    newImg.style.border = "3px solid var(--olx-purple)";
+                    div.parentNode.replaceChild(newImg, div);
+                }
+            }
+        }
+        reader.readAsDataURL(input.files[0]);
+    }
+}
+</script>
 
 <?php require_once __DIR__ . '/../layout/footer.php'; ?>

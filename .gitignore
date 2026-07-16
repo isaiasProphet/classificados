@@ -1,3 +1,4 @@
 uploads/anuncios/*
+uploads/usuarios/*
 .env
 config/Database.php

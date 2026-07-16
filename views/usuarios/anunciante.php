@@ -9,9 +9,13 @@
         
         <div style="display: flex; gap: 25px; align-items: center; flex-wrap: wrap; position: relative; z-index: 2;">
             <!-- Avatar Inicial -->
-            <div style="width: 100px; height: 100px; border-radius: 50%; background: rgba(255, 255, 255, 0.2); display: flex; align-items: center; justify-content: center; font-size: 2.8rem; font-weight: 700; border: 3px solid rgba(255, 255, 255, 0.4); text-transform: uppercase; box-shadow: var(--shadow-sm);">
-                <?= mb_substr(htmlspecialchars($usuario->getNome()), 0, 1) ?>
-            </div>
+            <?php if ($usuario->getFotoPerfilPath()): ?>
+                <img src="<?= htmlspecialchars($usuario->getFotoPerfilPath()) ?>" alt="<?= htmlspecialchars($usuario->getNome()) ?>" style="width: 100px; height: 100px; border-radius: 50%; object-fit: cover; border: 3px solid rgba(255, 255, 255, 0.4); box-shadow: var(--shadow-sm);">
+            <?php else: ?>
+                <div style="width: 100px; height: 100px; border-radius: 50%; background: rgba(255, 255, 255, 0.2); display: flex; align-items: center; justify-content: center; font-size: 2.8rem; font-weight: 700; border: 3px solid rgba(255, 255, 255, 0.4); text-transform: uppercase; box-shadow: var(--shadow-sm);">
+                    <?= mb_substr(htmlspecialchars($usuario->getNome()), 0, 1) ?>
+                </div>
+            <?php endif; ?>
             
             <div style="flex: 1; min-width: 250px;">
                 <h1 style="color: white; margin-bottom: 8px; font-size: 2rem; font-weight: 700; letter-spacing: -0.5px;">

@@ -145,6 +145,28 @@ class UsuarioController {
             $usuario->setCargoIgreja(trim($_POST['cargo_igreja'] ?? $usuario->getCargoIgreja()));
             $usuario->setSobreMim(trim($_POST['sobre_mim'] ?? $usuario->getSobreMim()));
 
+            // Tratamento do upload da foto de perfil
+            if (isset($_FILES['foto_perfil']) && $_FILES['foto_perfil']['error'] === UPLOAD_ERR_OK) {
+                $uploadDir = __DIR__ . '/../uploads/usuarios/';
+                $fileInfo = pathinfo($_FILES['foto_perfil']['name']);
+                $extension = strtolower($fileInfo['extension']);
+                $allowedExtensions = ['jpg', 'jpeg', 'png', 'webp'];
+                
+                if (in_array($extension, $allowedExtensions)) {
+                    $newFileName = 'user_' . $usuario->getId() . '_' . time() . '.' . $extension;
+                    $targetFile = $uploadDir . $newFileName;
+                    
+                    if (move_uploaded_file($_FILES['foto_perfil']['tmp_name'], $targetFile)) {
+                        // Deletar foto antiga se existir
+                        $fotoAntiga = $usuario->getFotoPerfilPath();
+                        if (!empty($fotoAntiga) && file_exists(__DIR__ . '/../' . $fotoAntiga)) {
+                            unlink(__DIR__ . '/../' . $fotoAntiga);
+                        }
+                        $usuario->setFotoPerfilPath('uploads/usuarios/' . $newFileName);
+                    }
+                }
+            }
+
             $novaSenha = $_POST['senha'] ?? '';
             if (!empty($novaSenha)) {
                 $senhaAtual = $_POST['senha_atual'] ?? '';

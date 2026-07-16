@@ -63,7 +63,7 @@ class UsuarioDAO {
     }
 
     public function update(Usuario $usuario) {
-        $query = "UPDATE Usuario SET nome = :nome, email = :email, telefone = :telefone, senha = :senha, igreja_id = :igreja_id, cargo_igreja = :cargo_igreja, sobre_mim = :sobre_mim, permissoes = :permissoes WHERE id = :id";
+        $query = "UPDATE Usuario SET nome = :nome, email = :email, telefone = :telefone, senha = :senha, igreja_id = :igreja_id, cargo_igreja = :cargo_igreja, sobre_mim = :sobre_mim, foto_perfil = :foto_perfil, permissoes = :permissoes WHERE id = :id";
         $stmt = $this->conn->prepare($query);
 
         $stmt->bindValue(':nome', $usuario->getNome());
@@ -73,6 +73,7 @@ class UsuarioDAO {
         $stmt->bindValue(':igreja_id', $usuario->getIgrejaId() ?: null);
         $stmt->bindValue(':cargo_igreja', $usuario->getCargoIgreja());
         $stmt->bindValue(':sobre_mim', $usuario->getSobreMim());
+        $stmt->bindValue(':foto_perfil', $usuario->getFotoPerfilPath());
         $stmt->bindValue(':permissoes', $usuario->getPermissoes()->value);
         $stmt->bindValue(':id', $usuario->getId());
 

@@ -33,7 +33,14 @@
                 $isCliente = ($usuarioLogado && $usuarioLogado->getPermissoes() === PermissaoUsuario::CLIENTE);
             ?>
             <div class="nav-user-bar nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="color: rgba(255,255,255,0.9); font-size: 0.95rem; font-weight: 500;">
+                <a class="nav-link dropdown-toggle d-flex align-items-center gap-2" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="color: rgba(255,255,255,0.9); font-size: 0.95rem; font-weight: 500;">
+                    <?php if ($usuarioLogado && $usuarioLogado->getFotoPerfilPath()): ?>
+                        <img src="<?= htmlspecialchars($usuarioLogado->getFotoPerfilPath()) ?>" alt="Foto" class="rounded-circle" style="width: 28px; height: 28px; object-fit: cover; border: 1px solid rgba(255,255,255,0.5);">
+                    <?php else: ?>
+                        <div class="rounded-circle d-flex align-items-center justify-content-center" style="width: 28px; height: 28px; background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.5); font-size: 0.8rem;">
+                            <?= mb_substr(htmlspecialchars($_SESSION['usuario_nome']), 0, 1) ?>
+                        </div>
+                    <?php endif; ?>
                     Olá, <?= htmlspecialchars($_SESSION['usuario_nome']) ?>
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end shadow-sm user-dropdown-menu" aria-labelledby="userDropdown">
