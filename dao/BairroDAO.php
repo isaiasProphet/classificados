@@ -37,4 +37,17 @@ class BairroDAO {
         
         return null;
     }
+
+    public function create(Bairro $bairro): bool {
+        $query = "INSERT INTO Bairro (nome, cidadeId) VALUES (:nome, :cidadeId)";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindValue(':nome', $bairro->getNome());
+        $stmt->bindValue(':cidadeId', $bairro->getCidadeId(), PDO::PARAM_INT);
+        
+        if ($stmt->execute()) {
+            $bairro->setId($this->conn->lastInsertId());
+            return true;
+        }
+        return false;
+    }
 }

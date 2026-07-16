@@ -260,4 +260,58 @@ class AdminController {
         require_once __DIR__ . '/../views/admin/anuncios_list.php';
     }
 
+    public function bairroAdd() {
+        if (!isset($_SESSION['usuario_id'])) {
+            header("Location: index.php?action=login");
+            exit;
+        }
+
+        require_once __DIR__ . '/../dao/UsuarioDAO.php';
+        $usuarioDAO = new UsuarioDAO();
+        $usuario = $usuarioDAO->readById($_SESSION['usuario_id']);
+        if ($usuario && $usuario->getPermissoes() !== PermissaoUsuario::ADMIN) {
+            header("Location: index.php?error=unauthorized");
+            exit;
+        }
+
+        // Fetch all cities with their state abbreviation (UF)
+        require_once __DIR__ . '/../config/Database.php';
+        $conn = Database::getConnection();
+        $stmt = $conn->query("SELECT c.id, c.nome, e.uf FROM cidade c JOIN estados e ON c.estado_id = e.id ORDER BY c.nome ASC");
+        $cidades = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        require_once __DIR__ . '/../views/admin/bairro_add.php';
+    }
+
+    public function bairroStore() {
+        if (!isset($_SESSION['usuario_id'])) {
+            header("Location: index.php?action=login");
+            exit;
+        }
+
+        require_once __DIR__ . '/../dao/UsuarioDAO.php';
+        $usuarioDAO = new UsuarioDAO();
+        $usuario = $usuarioDAO->readById($_SESSION['usuario_id']);
+        if ($usuario && $usuario->getPermissoes() !== PermissaoUsuario::ADMIN) {
+            header("Location: index.php?error=unauthorized");
+            exit;
+        }
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            require_once __DIR__ . '/../dao/BairroDAO.php';
+            require_once __DIR__ . '/../model/Bairro.php';
+            
+            $nome = trim($_POST['nome'] ?? '');
+            $cidadeId = isset($_POST['cidadeId']) ? (int)$_POST['cidadeId'] : 0;
+
+            if ($nome !== '' && $cidadeId > 0) {
+                $bairroDAO = new BairroDAO();
+                $bairro = new Bairro($nome, $cidadeId);
+                $bairroDAO->create($bairro);
+            }
+        }
+
+        header("Location: index.php?action=admin_bairros_list");
+        exit;
+    }
 }

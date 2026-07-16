@@ -37,6 +37,12 @@ switch ($action) {
     case 'admin_bairros_list':
         $adminController->bairrosList();
         break;
+    case 'admin_bairro_add':
+        $adminController->bairroAdd();
+        break;
+    case 'admin_bairro_store':
+        $adminController->bairroStore();
+        break;
     case 'admin_usuarios_list':
         $adminController->usuariosList();
         break;
@@ -54,6 +60,9 @@ switch ($action) {
         break;
     case 'login':
         $usuarioController->login();
+        break;
+    case 'anunciante':
+        $usuarioController->anunciante();
         break;
     case 'authenticate':
         $usuarioController->authenticate();

@@ -56,10 +56,7 @@
                 </div>
                   <div style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 20px; display: flex; gap: 15px;">
                     
-                    <span> 
-                        
-                        Anunciado por: <?= $usuario->getNome(); ?>
-                    </span>
+                        Anunciado por: <a href="index.php?action=anunciante&id=<?= $usuario->getId(); ?>" style="color: var(--olx-purple); text-decoration: none; font-weight: 600; transition: color 0.2s;" onmouseover="this.style.textDecoration='underline'; this.style.color='var(--olx-purple-dark)';" onmouseout="this.style.textDecoration='none'; this.style.color='var(--olx-purple)';"><?= htmlspecialchars($usuario->getNome()); ?></a>
                 </div>
 
 

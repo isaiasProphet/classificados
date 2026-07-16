@@ -172,4 +172,31 @@ class UsuarioController {
         header("Location: index.php");
         exit;
     }
+
+    public function anunciante() {
+        $id = isset($_GET['id']) ? (int) $_GET['id'] : 0;
+        if ($id <= 0) {
+            header("Location: index.php");
+            exit;
+        }
+
+        $usuario = $this->usuarioDAO->readById($id);
+        if (!$usuario) {
+            header("Location: index.php");
+            exit;
+        }
+
+        $igreja = null;
+        if ($usuario->getIgrejaId() > 0) {
+            require_once __DIR__ . '/../dao/IgrejaDAO.php';
+            $igrejaDAO = new IgrejaDAO();
+            $igreja = $igrejaDAO->readOne($usuario->getIgrejaId());
+        }
+
+        require_once __DIR__ . '/../dao/AnuncioDAO.php';
+        $anuncioDAO = new AnuncioDAO();
+        $anuncios = $anuncioDAO->readActiveByUsuarioId($id);
+
+        require_once __DIR__ . '/../views/usuarios/anunciante.php';
+    }
 }

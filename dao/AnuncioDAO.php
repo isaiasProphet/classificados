@@ -217,4 +217,23 @@ class AnuncioDAO {
         }
         return $anuncios;
     }
+
+    public function readActiveByUsuarioId($usuarioId) {
+        $query = "SELECT * FROM Anuncio WHERE usuarioId = :usuarioId AND status = 'ativo' ORDER BY dataCriacao DESC";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(":usuarioId", $usuarioId);
+        $stmt->execute();
+
+        $anuncios = [];
+        $imagemDAO = new ImagemAnuncioDAO();
+        while ($row = $stmt->fetch()) {
+            $anuncio = $this->hydrateAnuncio($row);
+            $capa = $imagemDAO->findCapaByAnuncioId($anuncio->getId());
+            if ($capa) {
+                $anuncio->setCapaPath($capa->getCaminhoArquivo());
+            }
+            $anuncios[] = $anuncio;
+        }
+        return $anuncios;
+    }
 }
