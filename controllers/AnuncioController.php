@@ -14,7 +14,7 @@ class AnuncioController {
     private const UPLOAD_DIR = __DIR__ . '/../uploads/anuncios/';
     private const ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
     private const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
-    private const MAX_IMAGES = 8;
+    private const MAX_IMAGES = 6;
 
     public function __construct() {
         $this->anuncioDAO = new AnuncioDAO();
@@ -187,6 +187,8 @@ class AnuncioController {
             header("Location: index.php");
             exit;
         }
+
+        $this->anuncioDAO->incrementarVisualizacoes($id);
 
         $imagens = $this->imagemDAO->findByAnuncioId($id);
 

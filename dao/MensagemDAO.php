@@ -91,4 +91,19 @@ class MensagemDAO {
         
         return $stmt->fetchAll();
     }
+
+    public function markAsRead(int $destinatarioId, int $remetenteId, int $anuncioId): bool {
+        $query = "UPDATE Mensagem 
+                  SET lida = 1, data_leitura = NOW() 
+                  WHERE destinatario_usuario_id = :destinatarioId 
+                  AND remetente_usuario_id = :remetenteId 
+                  AND anuncio_id = :anuncioId 
+                  AND lida = 0";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindValue(':destinatarioId', $destinatarioId, PDO::PARAM_INT);
+        $stmt->bindValue(':remetenteId', $remetenteId, PDO::PARAM_INT);
+        $stmt->bindValue(':anuncioId', $anuncioId, PDO::PARAM_INT);
+        return $stmt->execute();
+    }
 }
+

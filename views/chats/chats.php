@@ -31,7 +31,7 @@ let activeChat = null;
 
 async function loadChats() {
     try {
-        const response = await fetch('/index.php?action=api_listar_chats');
+        const response = await fetch('index.php?action=api_listar_chats');
         const data = await response.json();
         
         const chatList = document.getElementById('chatList');
@@ -97,7 +97,7 @@ async function loadMessages() {
     if (!activeChat) return;
 
     try {
-        const response = await fetch(`/index.php?action=listar_mensagens&anuncioId=${activeChat.anuncioId}&outroUsuarioId=${activeChat.usuarioId}`);
+        const response = await fetch(`index.php?action=listar_mensagens&anuncioId=${activeChat.anuncioId}&outroUsuarioId=${activeChat.usuarioId}`);
         const data = await response.json();
 
         const messagesContainer = document.getElementById('chatMessages');
@@ -133,7 +133,7 @@ async function sendMessage() {
     if (!text) return;
 
     try {
-        const response = await fetch('/index.php?action=enviar_mensagem', {
+        const response = await fetch('index.php?action=enviar_mensagem', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

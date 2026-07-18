@@ -161,6 +161,15 @@ class AnuncioDAO {
         return false;
     }
 
+    public function incrementarVisualizacoes(int $anuncioId): bool {
+        $query = "UPDATE Anuncio 
+                  SET visualizacoes = visualizacoes + 1 
+                  WHERE id = :anuncioId AND status = 'ativo'";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindValue(':anuncioId', $anuncioId, PDO::PARAM_INT);
+        return $stmt->execute();
+    }
+
     public function update(Anuncio $anuncio) {
         $query = "UPDATE Anuncio 
                   SET titulo = :titulo, descricao = :descricao, subCategoriaId = :subCategoriaId, preco = :preco, status = :status 

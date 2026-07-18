@@ -66,6 +66,9 @@ class MensagemController {
             return;
         }
 
+        // Marcar mensagens recebidas como lidas
+        $this->mensagemDAO->markAsRead($usuarioLogadoId, $outroUsuarioId, $anuncioId);
+
         $mensagens = $this->mensagemDAO->readChat($usuarioLogadoId, $outroUsuarioId, $anuncioId);
         $result = [];
         foreach ($mensagens as $msg) {
