@@ -13,19 +13,19 @@
             <div class="row">
                 <div class="col-md-6 mb-3">
                     <label for="nome" class="form-label">Nome Completo</label>
-                    <input type="text" class="form-control" id="nome" name="nome" value="<?= htmlspecialchars($usuarioEditar->getNome()) ?>" required>
+                    <input type="text" disabled class="form-control" id="nome" name="nome" value="<?= htmlspecialchars($usuarioEditar->getNome()) ?>" required>
                 </div>
 
                 <div class="col-md-6 mb-3">
                     <label for="email" class="form-label">E-mail</label>
-                    <input type="email" class="form-control" id="email" name="email" value="<?= htmlspecialchars($usuarioEditar->getEmail()) ?>" required>
+                    <input type="email" disabled class="form-control" id="email" name="email" value="<?= htmlspecialchars($usuarioEditar->getEmail()) ?>" required>
                 </div>
             </div>
 
             <div class="row">
                 <div class="col-md-6 mb-3">
                     <label for="telefone" class="form-label">Telefone</label>
-                    <input type="text" class="form-control" id="telefone" name="telefone" value="<?= htmlspecialchars($usuarioEditar->getTelefone()) ?>">
+                    <input type="text" disabled class="form-control" id="telefone" name="telefone" value="<?= htmlspecialchars($usuarioEditar->getTelefone()) ?>">
                 </div>
 
                 <div class="col-md-6 mb-3">

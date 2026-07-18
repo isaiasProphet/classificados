@@ -28,9 +28,12 @@
 
             <?php if (isset($_SESSION['usuario_id'])): 
                 require_once __DIR__ . '/../../dao/UsuarioDAO.php';
+                require_once __DIR__ . '/../../dao/MensagemDAO.php';
                 $usuarioDAO = new UsuarioDAO();
                 $usuarioLogado = $usuarioDAO->readById($_SESSION['usuario_id']);
                 $isCliente = ($usuarioLogado && $usuarioLogado->getPermissoes() === PermissaoUsuario::CLIENTE);
+                $mensagemDAO = new MensagemDAO();
+                $unreadCount = $mensagemDAO->countUnread($_SESSION['usuario_id']);
             ?>
             <div class="nav-user-bar nav-item dropdown">
                 <a class="nav-link dropdown-toggle d-flex align-items-center gap-2" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="color: rgba(255,255,255,0.9); font-size: 0.95rem; font-weight: 500;">
@@ -52,7 +55,7 @@
                         <li><a class="dropdown-item" href="index.php?action=meus_anuncios" style="color: #1a1a2e !important;">Meus anúncios</a></li>
                     <?php endif; ?>
                     <?php if ($isCliente): ?>
-                    <li><a class="dropdown-item" href="index.php?action=listar_chats" style="color: #1a1a2e !important;">Chat</a></li>
+                    <li><a class="dropdown-item d-flex align-items-center justify-content-between" href="index.php?action=listar_chats" style="color: #1a1a2e !important;">Chat<?php if ($unreadCount > 0): ?><span class="chat-unread-badge"><?= $unreadCount ?></span><?php endif; ?></a></li>
                     <?php endif; ?>
                     <li><hr class="dropdown-divider"></li>
                     <li><a class="dropdown-item" href="index.php?action=logout" style="color: #1a1a2e !important;">Sair</a></li>
@@ -63,13 +66,13 @@
             <ul class="nav-links mb-0 p-0" style="display: flex; align-items: center;">
                 <?php if (isset($_SESSION['usuario_id'])): ?>
                     <?php if (!$isCliente): ?>
-                        <li> 
-                            <a href="index.php?action=listar_chats">
+                        <li style="position: relative;"> 
+                            <a href="index.php?action=listar_chats" style="position: relative; display: inline-flex; align-items: center; gap: 5px;">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chat-dots" viewBox="0 0 16 16">
                                 <path d="M5 8a1 1 0 1 1-2 0 1 1 0 0 1 2 0m4 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0m3 1a1 1 0 1 0 0-2 1 1 0 0 0 0 2"/>
                                 <path d="m2.165 15.803.02-.004c1.83-.363 2.948-.842 3.468-1.105A9 9 0 0 0 8 15c4.418 0 8-3.134 8-7s-3.582-7-8-7-8 3.134-8 7c0 1.76.743 3.37 1.97 4.6a10.4 10.4 0 0 1-.524 2.318l-.003.011a11 11 0 0 1-.244.637c-.079.186.074.394.273.362a22 22 0 0 0 .693-.125m.8-3.108a1 1 0 0 0-.287-.801C1.618 10.83 1 9.468 1 8c0-3.192 3.004-6 7-6s7 2.808 7 6-3.004 6-7 6a8 8 0 0 1-2.088-.272 1 1 0 0 0-.711.074c-.387.196-1.24.57-2.634.893a11 11 0 0 0 .398-2"/>
                             </svg>    
-                            Chat</a>
+                            Chat<?php if ($unreadCount > 0): ?><span class="chat-unread-badge"><?= $unreadCount ?></span><?php endif; ?></a>
                         </li>
                         <li><a href="index.php?action=create" class="btn-anunciar">&#10010; Anunciar</a></li>
                     <?php endif; ?>

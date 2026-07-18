@@ -4,7 +4,7 @@ class Database {
     private static $host = "localhost";
     private static $db_name = "classificados";
     private static $username = "isaias"; // Using default root for local, the user can change it
-    private static $password = "341200"; 
+    private static $password = "341200@Ibn"; 
     private static $conn = null;
 
     public static function getConnection() {

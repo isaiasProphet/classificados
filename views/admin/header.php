@@ -23,7 +23,7 @@
           <a class="nav-link" href="index.php?action=admin_bairros_list">Bairros</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">Anúncios</a>
+          <a class="nav-link" href="index.php?action=admin_anuncios_list">Anúncios</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="index.php?action=admin_usuarios_list">Usuários</a>

@@ -56,7 +56,7 @@
 
 <script>
 document.addEventListener("DOMContentLoaded", function () {
-    const itensPorPagina = 10;
+    const itensPorPagina = 5;
     const linhas = document.querySelectorAll('.linha-anuncio');
     const totalItens = linhas.length;
     const totalPaginas = Math.ceil(totalItens / itensPorPagina);

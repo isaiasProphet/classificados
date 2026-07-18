@@ -48,6 +48,17 @@ class MensagemDAO {
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+    /**
+     * Conta mensagens não lidas para o usuário destinatário.
+     */
+    public function countUnread(int $usuarioId): int {
+        $query = "SELECT COUNT(*) FROM Mensagem WHERE destinatario_usuario_id = :usuarioId AND lida = 0";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindValue(':usuarioId', $usuarioId, PDO::PARAM_INT);
+        $stmt->execute();
+        return (int) $stmt->fetchColumn();
+    }
+
     public function readChats($usuarioId) {
         $query = "SELECT 
                     sub.anuncio_id,
