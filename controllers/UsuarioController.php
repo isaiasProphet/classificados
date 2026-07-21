@@ -1,11 +1,16 @@
 <?php
+
 require_once __DIR__ . '/../dao/UsuarioDAO.php';
+require_once __DIR__ . '/MailerController.php';
 
 class UsuarioController {
+
     private $usuarioDAO;
+    private $mailController;
 
     public function __construct() {
         $this->usuarioDAO = new UsuarioDAO();
+        $this->mailController = new MailerController();
     }
 
     public function login() {
@@ -61,6 +66,7 @@ class UsuarioController {
             $usuario = new Usuario($nome, $email, $senha, '', new DateTime(), PermissaoUsuario::CLIENTE);
 
             if ($this->usuarioDAO->create($usuario)) {
+                $this->mailController->sendEmailWelcome($usuario->getEmail(), $usuario->getNome());
                 header("Location: index.php?action=login&success=registered");
                 exit;
             } else {
