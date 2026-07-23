@@ -35,6 +35,9 @@
                 <small style="color: var(--text-muted); font-size: 0.8rem;">Mín. 8 caracteres, com maiúsculas, minúsculas, números e símbolos.</small>
             </div>
 
+            
+            <div class="cf-turnstile" data-sitekey="0x4AAAAAAD6sGi4kaUAZXvZb"></div>
+             
             <button type="submit" class="btn-primary" style="width: 100%; margin-top: 10px; padding: 12px;">Cadastrar</button>
             
             <div style="text-align: center; margin-top: 20px; font-size: 0.9rem;">

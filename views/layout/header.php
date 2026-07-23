@@ -10,9 +10,15 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
 
-    
-
     <link rel="stylesheet" href="views/assets/css/style.css">
+
+    <link rel="preconnect" href="https://challenges.cloudflare.com" />
+
+    <script
+	src="https://challenges.cloudflare.com/turnstile/v0/api.js"
+	async
+	defer
+></script>    
 </head>
 <body>
     <nav class="navbar" style="padding-top: 0; padding-bottom: 0;">

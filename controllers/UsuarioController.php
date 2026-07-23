@@ -45,7 +45,56 @@ class UsuarioController {
         require_once __DIR__ . '/../views/usuarios/register.php';
     }
 
+
+    private function validarTokenTurnstile(){
+        
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $token = $_POST['cf-turnstile-response'] ?? '';
+            $secretKey = $_ENV['TURNSTILE_SECRET_KEY'] ?? 'xxxxxxxxxxxxxxxxxxxxxxx';
+
+            if (empty($token)) {
+                die('Por favor, confirme que você não é um robô.');
+            }
+
+            $data = http_build_query([
+                'secret'   => $secretKey,
+                'response' => $token,
+                'remoteip' => $_SERVER['REMOTE_ADDR'] ?? null
+            ]);
+
+            $options = [
+                'http' => [
+                    'header'  => "Content-Type: application/x-www-form-urlencoded\r\n" .
+                                "Content-Length: " . strlen($data) . "\r\n",
+                    'method'  => 'POST',
+                    'content' => $data,
+                    'timeout' => 10
+                ]
+            ];
+
+            $context  = stream_context_create($options);
+            $response = @file_get_contents('https://challenges.cloudflare.com/turnstile/v0/siteverify', false, $context);
+
+            if ($response === false) {
+                die("Erro ao conectar com a API de validação.");
+            }
+
+            $resultado = json_decode($response, true);
+
+            if (!empty($resultado['success'])) {
+                $email = filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL);
+                return true;
+            } else {
+                header("Location: index.php?action=register&error=erro_captcha");
+                exit;
+            }
+        }
+
+    }
+
+
     public function store() {
+        $this->validarTokenTurnstile();
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $nome = trim($_POST['nome'] ?? '');
             $email = trim($_POST['email'] ?? '');
@@ -66,6 +115,7 @@ class UsuarioController {
             $usuario = new Usuario($nome, $email, $senha, '', new DateTime(), PermissaoUsuario::CLIENTE);
 
             if ($this->usuarioDAO->create($usuario)) {
+                // criar log para gravar erro de envio de email
                 $this->mailController->sendEmailWelcome($usuario->getEmail(), $usuario->getNome());
                 header("Location: index.php?action=login&success=registered");
                 exit;

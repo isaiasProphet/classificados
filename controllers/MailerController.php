@@ -43,7 +43,7 @@ class MailerController
         $this->mailer->CharSet    = 'UTF-8';
 
         // Remetente padrão
-        $this->mailer->setFrom('classificados.galatas6@gmail.com', 'Isaías Braga');
+        $this->mailer->setFrom('classificados.galatas6@gmail.com', 'Gálatas 6');
     }
 
 
@@ -157,9 +157,9 @@ class MailerController
     $mailAltBody = "Seja muito bem-vindo(a)!\n\nAguarde a liberação do cadastro, poderemos entrar em contato para solicitar algumas informações.\n\nDeus abençoe sua vida.";
 
     $this->send($mailTo, $name, $subject, $mailBody, $mailAltBody);
-    echo 'E-mail de boas-vindas enviado com sucesso!';
+    
 } catch (Exception $e) {
-    echo "Erro ao enviar e-mail: {$mail->ErrorInfo}";
+    return  "Erro ao enviar e-mail: {$mail->ErrorInfo}";
 }
     }
 
