@@ -2,6 +2,7 @@
 
 require_once __DIR__ . '/../dao/UsuarioDAO.php';
 require_once __DIR__ . '/MailerController.php';
+require_once __DIR__ . '/../config/Env.php';
 
 class UsuarioController {
 
@@ -47,10 +48,13 @@ class UsuarioController {
 
 
     private function validarTokenTurnstile(){
-        
+        Env::load(__DIR__ . '/../../.env');
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+            $key     = Env::get('SECRET_KEY');
+
             $token = $_POST['cf-turnstile-response'] ?? '';
-            $secretKey = $_ENV['TURNSTILE_SECRET_KEY'] ?? 'xxxxxxxxxxxxxxxxxxxxxxx';
+            $secretKey = $_ENV['TURNSTILE_SECRET_KEY'] ?? $key;
 
             if (empty($token)) {
                 die('Por favor, confirme que você não é um robô.');
