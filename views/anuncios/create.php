@@ -46,7 +46,7 @@
                  Seção de Upload de Imagens
                  ============================================ -->
             <div class="form-group">
-                <label>Fotos do Anúncio <span class="img-upload-hint">(máximo 8 fotos — JPG, PNG ou WebP até 5MB)</span></label>
+                <label>Fotos do Anúncio <span class="img-upload-hint">(máximo 5 fotos — JPG, PNG ou WebP até 5MB)</span></label>
                 
                 <div class="img-upload-area" id="imgUploadArea">
                     <div class="img-upload-dropzone" id="dropzone">
@@ -111,7 +111,7 @@
         });
 
         // ===== Lógica de Upload de Imagens =====
-        const MAX_IMAGES = 8;
+        const MAX_IMAGES = 5;
         const MAX_SIZE = 5 * 1024 * 1024; // 5MB
         const ALLOWED = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
 

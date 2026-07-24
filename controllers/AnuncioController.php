@@ -14,7 +14,7 @@ class AnuncioController {
     private const UPLOAD_DIR = __DIR__ . '/../uploads/anuncios/';
     private const ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
     private const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
-    private const MAX_IMAGES = 6;
+    private const MAX_IMAGES = 5;
 
     public function __construct() {
         $this->anuncioDAO = new AnuncioDAO();
@@ -207,7 +207,7 @@ class AnuncioController {
         // Garantir que o diretório de upload existe
         $uploadDir = self::UPLOAD_DIR . $anuncioId . '/';
         if (!is_dir($uploadDir)) {
-            mkdir($uploadDir, 0755, true);
+            mkdir($uploadDir, 0777, true);
         }
 
         $imgPrincipalIndex = isset($_POST['imgPrincipal']) ? (int) $_POST['imgPrincipal'] : 0;
